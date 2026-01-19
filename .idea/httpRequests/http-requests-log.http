@@ -1,0 +1,201 @@
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 56
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "",
+  "descripcionRol": ""
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+Content-Type: application/json
+Content-Length: 84
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "id": 0,
+  "nombreRol": "Miembro",
+  "descripcionRol": "Miembro de la iglesia"
+}
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/asistencias/mostrartodas
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/asistencias/agregarasistencia
+Content-Type: application/x-www-form-urlencoded
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+DELETE http://localhost:8080/api/asistencias/eliminarasistencias
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+POST http://localhost:8080/api/asistencias/agregarasistencia
+Content-Type: application/x-www-form-urlencoded
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/asistencias/mostrartodas
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+POST http://localhost:8080/api/roles/agregar
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+GET http://localhost:8080/api/asistencias/mostrartodas
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+###
+
+POST http://localhost:8080/api/asistencias/agregarasistencia
+Content-Type: application/x-www-form-urlencoded
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
+DELETE http://localhost:8080/api/asistencias/eliminarasistencias
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.3.1
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+###
+
