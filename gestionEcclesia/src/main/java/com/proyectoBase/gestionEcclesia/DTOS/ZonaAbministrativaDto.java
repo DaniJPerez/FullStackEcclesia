@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ZonaAbministrativaDto {
-    public String idZona;
+    public Long idZona;
     public String nombreZona;
     public String descripcionZona;
     public MiembroDTO responsableZona;

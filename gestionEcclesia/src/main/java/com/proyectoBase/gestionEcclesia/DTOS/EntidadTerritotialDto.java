@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class EntidadTerritotialDto {
-    private String idEntidad;
+    private Long idEntidad;
     private String nombreEntidad;
     private String descripcionEntidad;
     private PaisDto pais;

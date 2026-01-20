@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class NacionalidadDTO {
-    private String idNacionalidad;
+    private Long idNacionalidad;
     private String nombreNacionalidad;
     private String descripcionNacionalidad;
     private PaisDto pais;

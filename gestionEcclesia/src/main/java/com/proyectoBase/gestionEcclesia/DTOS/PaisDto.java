@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PaisDto {
-    private String idPais;
+    private Long idPais;
     private String nombrePais;
     private String descripcion;
     private Usuario usuarioCreador;

@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class IglesiaDTO {
-    private String idIglesia;
+    private Long idIglesia;
 
     private String nombreIglesia;
 
