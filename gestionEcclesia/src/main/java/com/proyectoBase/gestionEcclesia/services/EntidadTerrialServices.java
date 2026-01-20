@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EntidadTerrialServices {
     private final EntidadTerritorialRepository entidadTerritorialRepository;
-
+    private final PaisServices paisServices;
 }
