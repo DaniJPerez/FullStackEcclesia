@@ -27,7 +27,8 @@ public class UsuarioServices {
         Usuario usuario = repository.findByNombreUsuario(login.getUserName());
         if(usuario!= null && passwordEncoder.matches(login.getContrasenia(), usuario.getContrasenia())){
             return usuario;
-        }
+        }else
+         new IllegalArgumentException("Usuario o contraseña incorrectos");
         return null;
     }
 
