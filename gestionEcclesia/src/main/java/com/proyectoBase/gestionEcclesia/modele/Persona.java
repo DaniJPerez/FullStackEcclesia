@@ -1,6 +1,8 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,6 +40,7 @@ public class Persona {
     private String telefono;
 
     @Column(name = "correo", length = 55)
+    @Email
     private String correo;
 
     @Column(name="contrasena", length = 30,nullable = false)
@@ -45,6 +48,7 @@ public class Persona {
     private String contrasenia;
 
     @Column(name = "fecha_nacimiento", nullable = false)
+    @Past
     private LocalDate fechaNacimiento;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

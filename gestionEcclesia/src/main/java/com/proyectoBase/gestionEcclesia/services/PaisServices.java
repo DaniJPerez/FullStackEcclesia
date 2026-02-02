@@ -25,17 +25,24 @@ public class PaisServices {
         return paisRepository.findByNombrePais(nombrePais);
     }
 
-    public Pais savePais(Pais pais) {
-        return paisRepository.save(pais);
+    public Pais savePais(PaisDto pais) {
+        Pais nuevoPais = new Pais();
+        nuevoPais = updatePaisFromDto(nuevoPais, pais);
+        return paisRepository.save(nuevoPais);
     }
 
+    public Pais updatePais(Long idPais, PaisDto paisDto) {
+        Pais paisExistente = findByIdPais(idPais);
+        paisExistente = updatePaisFromDto(paisExistente, paisDto);
+        return paisRepository.save(paisExistente);
+    }
 
     public void deletePais(Long idPais) {
         paisRepository.deleteById(idPais);
     }
 
-    public Pais updatePaisFromDto(PaisDto paisDto) {
-        Pais pais = findByIdPais(paisDto.getIdPais());
+    public Pais updatePaisFromDto(Pais pais,PaisDto paisDto) {
+        pais.setId(paisDto.getIdPais());
         pais.setNombrePais(paisDto.getNombrePais());
         pais.setDescripcion(paisDto.getDescripcion());
         return pais;

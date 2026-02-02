@@ -44,7 +44,8 @@ public class AsistenciaEventoService {
     @Transactional
     public AsistenciaEvento save(AsistenciaEventoDto asistenciaEventoDto) {
 
-        AsistenciaEvento asistenciaEvento = updateAsistenciaEventoFromDto(asistenciaEventoDto);
+        AsistenciaEvento asistenciaEvento = new AsistenciaEvento();
+        asistenciaEvento = updateAsistenciaEventoFromDto(asistenciaEvento, asistenciaEventoDto);
 
         var asistenciaExistente = comprobarAsistenciaEvento(
                 asistenciaEvento.getPersona(),
@@ -132,8 +133,8 @@ public class AsistenciaEventoService {
 
     }
 
-    public AsistenciaEvento updateAsistenciaEventoFromDto(AsistenciaEventoDto asistenciaEventoDto) {
-        AsistenciaEvento asistenciaEvento= new AsistenciaEvento();
+    public AsistenciaEvento updateAsistenciaEventoFromDto(AsistenciaEvento asistenciaEvento,AsistenciaEventoDto asistenciaEventoDto) {
+
         asistenciaEvento.setIdAsistenciaEvento(asistenciaEventoDto.getIdAsistencia());
         asistenciaEvento= asistenciaEventoManagerService
                         .convertirAEntidad(asistenciaEventoDto);

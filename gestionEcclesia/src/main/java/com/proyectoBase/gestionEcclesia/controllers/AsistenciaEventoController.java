@@ -27,20 +27,20 @@ public class AsistenciaEventoController {
     }
 
     @GetMapping("/buscarporid/{id}")
-    public ResponseEntity<AsistenciaEventoDto> getAsistenciaEventoById(@Valid @RequestBody Long idAsistencia){
-        AsistenciaEvento asistenciaEvento = asistenciaEventoService.getAsistenciaById(idAsistencia);
+    public ResponseEntity<AsistenciaEventoDto> getAsistenciaEventoById(@PathVariable Long id) {
+        AsistenciaEvento asistenciaEvento = asistenciaEventoService.getAsistenciaById(id);
         return ResponseEntity.ok(asistenciaEventoService.convertToDto(asistenciaEvento));
     }
 
     @PostMapping("/agregarasistencia")
-    public ResponseEntity<AsistenciaEventoDto> agregarAsistencia(@PathVariable AsistenciaEventoDto asistenciaEventoDto){
+    public ResponseEntity<AsistenciaEventoDto> agregarAsistencia(@Valid @RequestBody AsistenciaEventoDto asistenciaEventoDto) {
         AsistenciaEvento asistenciaEvento = asistenciaEventoService.save(asistenciaEventoDto);
         return new ResponseEntity<>(asistenciaEventoService.convertToDto(asistenciaEvento), HttpStatus.CREATED);
     }
 
-    @PutMapping("/modificarasistencia")
-    public ResponseEntity<AsistenciaEventoDto> updateAsistencia(@PathVariable Long idevento, @PathVariable AsistenciaEventoDto asistenciaEventoDto){
-        AsistenciaEvento asistenciaEvento = asistenciaEventoService.update(idevento,asistenciaEventoDto);
+    @PutMapping("/modificarasistencia/{id}")
+    public ResponseEntity<AsistenciaEventoDto> updateAsistencia(@PathVariable Long id, @Valid @RequestBody AsistenciaEventoDto asistenciaEventoDto) {
+        AsistenciaEvento asistenciaEvento = asistenciaEventoService.update(id, asistenciaEventoDto);
         return ResponseEntity.ok(asistenciaEventoService.convertToDto(asistenciaEvento));
     }
 

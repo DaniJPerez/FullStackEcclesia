@@ -37,8 +37,7 @@ public class RolService {
     @Transactional
     public Rol update(Long id, RolDTO rolDTO) {
         Rol rol = findById(id);
-        rol.setDescripcionRol(rolDTO.getDescripcionRol());
-        rol.setNombreRol(rolDTO.getNombreRol());
+        rol = convertUpdateFromDto(rol, rolDTO);
         return rol;
     }
 
@@ -56,8 +55,7 @@ public class RolService {
         return rolDTO;
     }
 
-    public Rol convertUpdateFromDto(RolDTO rolDTO) {
-        Rol rol = new Rol();
+    public Rol convertUpdateFromDto(Rol rol,RolDTO rolDTO) {
         rol.setIdRol(rolDTO.getId());
         rol.setDescripcionRol(rolDTO.getDescripcionRol());
         rol.setNombreRol(rolDTO.getNombreRol());

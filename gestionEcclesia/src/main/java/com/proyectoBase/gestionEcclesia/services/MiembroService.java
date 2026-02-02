@@ -73,7 +73,8 @@ public class MiembroService {
         }
         // Manejar roles
         if (persona.getRol() != null && miembroDTO.getRolDTO() != null) {
-            persona.setRol(rolService.convertUpdateFromDto(miembroDTO.getRolDTO()));
+            Rol rol = new Rol();
+            persona.setRol(rolService.convertUpdateFromDto(rol,miembroDTO.getRolDTO()));
         }
         return persona;
     }

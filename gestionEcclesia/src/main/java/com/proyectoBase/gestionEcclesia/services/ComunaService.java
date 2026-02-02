@@ -43,21 +43,25 @@ public class ComunaService {
         return comuna;
     }
 
+    @Transactional
+    public void delete (Long id){
+        Comuna comuna = findById(id);
+        comunaRepository.delete(comuna);
+    }
 
-     Comuna updateComunaFromDTO(Comuna comuna, ComunaDTO comunaDTO){
+
+     public Comuna updateComunaFromDTO(Comuna comuna, ComunaDTO comunaDTO){
         comuna.setId(comunaDTO.getIdComuna());
         comuna.setNombre(comunaDTO.getDescripcionComuna());
         comuna.setCiudad(ciudadService.updateCiudadFromDTO(comuna.getCiudad(),comunaDTO.getCiudadDTO()));
         return comuna;
     }
 
-    ComunaDTO convertToDTO(Comuna comuna){
+    public ComunaDTO convertToDTO(Comuna comuna){
         ComunaDTO comunaDTO= new ComunaDTO();
         comunaDTO.setIdComuna(comuna.getId());
         comunaDTO.setDescripcionComuna(comuna.getNombre());
         return comunaDTO;
     }
-
-
 
 }

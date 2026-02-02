@@ -9,10 +9,16 @@ import com.proyectoBase.gestionEcclesia.modele.Ciudad;
 import com.proyectoBase.gestionEcclesia.repositories.CiudadRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CiudadService {
     private final CiudadRepository ciudadRepository;
+
+    public List<Ciudad> getAllCiudades(){
+        return ciudadRepository.findAll();
+    }
 
     public Ciudad findByid(Long id){
         return ciudadRepository.findById(id)
@@ -39,13 +45,13 @@ public class CiudadService {
         ciudadRepository.delete(ciudad);
     }
 
-    Ciudad updateCiudadFromDTO(Ciudad ciudad,CiudadDTO ciudadDTO){
+    public Ciudad updateCiudadFromDTO(Ciudad ciudad,CiudadDTO ciudadDTO){
         ciudad.setIdCiudad(ciudadDTO.getIdCiudad());
         ciudad.setNombreCiudad(ciudadDTO.getNombreCiudad());
         return ciudad;
     }
 
-    CiudadDTO convertToDTO(Ciudad ciudad){
+    public CiudadDTO convertToDTO(Ciudad ciudad){
         CiudadDTO ciudadDTO = new CiudadDTO();
         ciudadDTO.setIdCiudad(ciudad.getIdCiudad());
         ciudadDTO.setNombreCiudad(ciudad.getNombreCiudad());

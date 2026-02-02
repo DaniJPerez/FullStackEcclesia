@@ -14,12 +14,18 @@ import com.proyectoBase.gestionEcclesia.modele.Comuna;
 import com.proyectoBase.gestionEcclesia.modele.Direccion;
 import com.proyectoBase.gestionEcclesia.repositories.DireccionRepository;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class DireccionService {
     private final DireccionRepository direccionRepository;
     private final BarrioService barrioService;
+
+    public List<Direccion> findAll(){
+        return direccionRepository.findAll();
+    }
 
     public Direccion findById(Long id){
         return direccionRepository.findById(id)
@@ -40,14 +46,20 @@ public class DireccionService {
         return direccion;
     }
 
-    Direccion updateDireccionFromDTO(Direccion direccion, DireccionDTO direccionDTO){
+    @Transactional
+    public void delete(Long id){
+        Direccion direccion = findById(id);
+        direccionRepository.delete(direccion);
+    }
+
+    public Direccion updateDireccionFromDTO(Direccion direccion, DireccionDTO direccionDTO){
         direccion.setId(direccion.getId());
         direccion.setCalle(direccionDTO.getCalle());
         direccion.setBarrio(barrioService.updateBarrioFromDTO(direccion.getBarrio(),direccionDTO.getBarrioDTO()));
         return direccion;
     }
 
-    DireccionDTO converToDTO(Direccion direccion){
+    public DireccionDTO converToDTO(Direccion direccion){
         DireccionDTO direccionDTO = new DireccionDTO();
         direccionDTO.setIdDireccion(direccion.getId());
         direccionDTO.setNumero(direccionDTO.getNumero());

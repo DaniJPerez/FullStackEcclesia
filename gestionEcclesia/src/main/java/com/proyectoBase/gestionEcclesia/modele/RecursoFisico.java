@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 public class RecursoFisico extends Recurso{
 
     @Column(name = "costo")
+    @Positive
     private BigDecimal costo;
 
     @ManyToOne
@@ -26,6 +28,7 @@ public class RecursoFisico extends Recurso{
     @Column(name = "nombre_categoria", length = 30)
     private String categoria;
 
-    @Column(name = "cantidad")
+    @Column(name = "cantidad", scale = 0, precision = 10)
+    @Positive
     private int cantidad;
 }

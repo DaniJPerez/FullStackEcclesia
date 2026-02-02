@@ -2,6 +2,7 @@ package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="iglesias", uniqueConstraints = @UniqueConstraint(name = "uk_nombre_iglesia", columnNames = "nombre_iglesia"))
+@Data
 public class Iglesia {
     @Id
     @Column(name = "id_iglesia")
@@ -42,7 +44,7 @@ public class Iglesia {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_zona_administrativa", foreignKey = @ForeignKey(name = "fk_iglesia_zona_administrativa"))
-    private ZonaAbministrativa zonaAdministrativa;
+    private ZonaAdministrativa zonaAdministrativa;
 
     @OneToMany(mappedBy = "congregacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Persona> miembros;

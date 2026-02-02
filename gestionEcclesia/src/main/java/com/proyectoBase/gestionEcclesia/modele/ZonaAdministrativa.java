@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Table(name="zona_abministrativa", uniqueConstraints = @UniqueConstraint(name= "uk_zona_nombre", columnNames = {"nombre_zona"}))
-public class ZonaAbministrativa {
+public class ZonaAdministrativa {
     @Id
     @Column(name="id_zona", length = 10, nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "zona_abministrativa_seq")

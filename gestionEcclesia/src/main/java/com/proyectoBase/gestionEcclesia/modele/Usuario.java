@@ -1,12 +1,14 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
@@ -31,14 +33,20 @@ public class Usuario {
     private String nombreUsuario;
 
     @Column(name="email", length = 50, nullable = false, unique = true)
+    @Email
     private String email;
 
-    @Column(name="contrasena", length = 30,nullable = false)
-    @Size(min = 8, max = 30, message = "La contraseña debe tener al menos 8 caracteres")
+    @Column(name="contrasena", length = 60, nullable = false)
+    @Size(min = 8, max = 60, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasenia;
 
     @Column(name="fecha_registro")
+    @CreatedDate
     private LocalDate fechaRegistro;
+
+    @Column(name="fecha_modificacion")
+    @CreatedDate
+    private LocalDate fechaModificacion;
 
     @Column(name="activo")
     @ColumnDefault("1")

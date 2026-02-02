@@ -111,5 +111,4 @@ public class EventoService {
             throw new IllegalArgumentException("Valor inválido para accesibilidad: " + value, e);
         }
     }
-
 }

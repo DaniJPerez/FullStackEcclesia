@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Contribucion {
     private LocalDate fechaContribucion;
 
     @Column(name = "monto", precision = 10, scale = 2)
+    @Positive
     private BigDecimal monto;
 
     @Column(name = "observaciones", length = 35)

@@ -14,21 +14,23 @@ public class IglesiaDTO {
 
     private String nombreIglesia;
 
-    private String direccionIglesia;
-
     private String telefonoIglesia;
 
     private String emailIglesia;
 
+    private short numeroIglesia;
+
     private MiembroDTO pastorIglesia;
 
-    private EntidadTerritotialDto entidadTerritotial;
+    private EntidadTerritorialDto entidadTerritotial;
 
-    private ZonaAbministrativaDto zonaAbministrativa;
+    private ZonaAdministrativaDto zonaAbministrativa;
+
+    private DireccionDTO direccion;
 
     private List<MiembroDTO> miembros;
 
-    private List<RecursoFisicoDTO> recursosFisicos;
+    private List<RecursoEconomicoDTO> recursosEconomicos;
 
     private UsuarioDto usuarioCreador;
 

@@ -9,11 +9,17 @@ import com.proyectoBase.gestionEcclesia.DTOS.BarrioDTO;
 import com.proyectoBase.gestionEcclesia.modele.Barrio;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BarrioService {
     private final BarrioRepository barrioRepository;
     private final ComunaService comunaService;
+
+    public List<Barrio> findAll(){
+        return barrioRepository.findAll();
+    }
 
     public Barrio findByid(Long id){
         return barrioRepository.findById(id)
@@ -41,14 +47,14 @@ public class BarrioService {
     }
 
     //accesivilidad solamente desde el paquete
-    Barrio updateBarrioFromDTO(Barrio barrio, BarrioDTO barrioDTO){
+    public Barrio updateBarrioFromDTO(Barrio barrio, BarrioDTO barrioDTO){
         barrio.setId(barrioDTO.getIdBarrio());
         barrio.setNombre(barrioDTO.getNombreBarrio());
         barrio.setComuna(comunaService.updateComunaFromDTO(barrio.getComuna(), barrioDTO.getComunaDTO()));
         return barrio;
     }
 
-    BarrioDTO convertToDTO(Barrio barrio){
+    public BarrioDTO convertToDTO(Barrio barrio){
         BarrioDTO barrioDTO = new BarrioDTO();
         barrioDTO.setIdBarrio(barrioDTO.getIdBarrio());
         barrioDTO.setNombreBarrio(barrioDTO.getNombreBarrio());

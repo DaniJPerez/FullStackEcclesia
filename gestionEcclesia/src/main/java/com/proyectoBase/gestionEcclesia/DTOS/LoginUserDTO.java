@@ -4,18 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UsuarioDto {
-    private Long idUsuario;
+public class LoginUserDTO {
     private String userName;
-    private String password;
-    private LocalDate fecha;
-    private boolean estado;
-    private String correo;
-
-
+    private String contrasenia;
 }

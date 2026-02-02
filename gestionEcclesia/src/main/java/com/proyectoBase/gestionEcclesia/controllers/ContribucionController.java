@@ -22,7 +22,7 @@ public class ContribucionController {
 
     private final ContribucionService contribucionService;
 
-    @GetMapping
+    @GetMapping("/mostrarTodos")
     public ResponseEntity<List<ContribucionDTO>> getAllContribuciones() {
         List<ContribucionDTO> contribuciones = contribucionService.findAll().stream()
                 .map(contribucionService::convertToDTO)

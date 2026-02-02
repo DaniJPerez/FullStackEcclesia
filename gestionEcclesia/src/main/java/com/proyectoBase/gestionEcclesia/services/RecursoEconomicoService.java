@@ -38,14 +38,14 @@ public class RecursoEconomicoService {
     @Transactional
     public RecursoEconomico save(RecursoEconomicoDTO recursoEconomicoDTO) {
         RecursoEconomico recursoEconomico = new RecursoEconomico();
-        updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
+        recursoEconomico = updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
         return recursoEconomicoRepository.save(recursoEconomico);
     }
 
     @Transactional
     public RecursoEconomico update(Long id, RecursoEconomicoDTO recursoEconomicoDTO) {
         RecursoEconomico recursoEconomico = findById(id);
-        updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
+        recursoEconomico= updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
         return recursoEconomicoRepository.save(recursoEconomico);
     }
 
@@ -55,11 +55,12 @@ public class RecursoEconomicoService {
         recursoEconomicoRepository.delete(recursoEconomico);
     }
 
-    private void updateRecursoEconomicoFromDTO(RecursoEconomico recursoEconomico, RecursoEconomicoDTO recursoEconomicoDTO) {
+    public RecursoEconomico updateRecursoEconomicoFromDTO(RecursoEconomico recursoEconomico, RecursoEconomicoDTO recursoEconomicoDTO) {
         recursoEconomico.setDescripcionRecurso(recursoEconomicoDTO.getDescripcion());
         recursoEconomico.setFechaAdquisicion(recursoEconomicoDTO.getFecha());
         recursoEconomico.setValorRecurso(recursoEconomicoDTO.getMonto());
         recursoEconomico.setDescripcionRecurso(recursoEconomicoDTO.getObservaciones());
+        return recursoEconomico;
     }
 
     public RecursoEconomicoDTO convertToDTO(RecursoEconomico recursoEconomico) {

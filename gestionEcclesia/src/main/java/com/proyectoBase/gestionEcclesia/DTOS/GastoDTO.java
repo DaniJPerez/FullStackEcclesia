@@ -7,10 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EntidadTerritotialDto {
-    private Long idEntidad;
-    private String nombreEntidad;
-    private String descripcionEntidad;
-    private PaisDto pais;
+public class GastoDTO {
+    private Long idGasto;
+    private String descripcionGasto;
+    private String  montoGasto;
+    private String fechaGasto;
     private UsuarioDto usuarioCreador;
+
 }
