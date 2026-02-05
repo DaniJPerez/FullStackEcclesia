@@ -26,9 +26,10 @@ public class AsistenciaEventoManagerService{
         var miembro = miembroService.findById(asistenciaEventoDto.getMiembro().getId());
         var evento = eventoService.findById(asistenciaEventoDto.getEvento().getId());
 
-        miembro.agregarAsistencia(asistenciaEvento);
-        evento.agregarAsistencia(asistenciaEvento);
-
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
         return asistenciaEvento;
 
     }
@@ -49,9 +50,10 @@ public class AsistenciaEventoManagerService{
         var miembro = miembroService.findById(asistenciaEvento.getPersona().getNumeroIdentificacion());
         var evento = eventoService.findById(asistenciaEvento.getEvento().getId());
 
-        miembro.agregarAsistencia(asistenciaEvento);
-        evento.agregarAsistencia(asistenciaEvento);
-
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
         return asistenciaEvento;
     }
 
@@ -62,9 +64,11 @@ public class AsistenciaEventoManagerService{
         var miembro = miembroService.findById(idMiembro);
         var evento = eventoService.findById(idEvento);
 
-        miembro.agregarAsistencia(asistenciaEvento);
-        evento.agregarAsistencia(asistenciaEvento);
-
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
+        
         return asistenciaEvento;
     }
 
@@ -75,8 +79,10 @@ public class AsistenciaEventoManagerService{
         var miembro = miembroService.findById(idMiembro);
         var evento = eventoService.findById(idEvento);
 
-        miembro.getAsistenciasEventos().remove(asistenciaEvento);
-        evento.getAsistentes().remove(asistenciaEvento);
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
 
         return asistenciaEvento;
 
@@ -88,6 +94,11 @@ public class AsistenciaEventoManagerService{
         var miembro = miembroService.findById(asistenciaEvento.getPersona().getNumeroIdentificacion());
         var evento = eventoService.findById(asistenciaEvento.getEvento().getId());
 
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
+
         return asistenciaEvento;
     }
 
@@ -98,6 +109,8 @@ public class AsistenciaEventoManagerService{
         var miembroDto = miembroService.convertToDTO(asistenciaEvento.getPersona());
 
         var eventoDto = eventoService.convertToDTO(asistenciaEvento.getEvento());
+
+
 
         asistenciaEventoDto.setMiembro(miembroDto);
         asistenciaEventoDto.setEvento(eventoDto);
@@ -113,8 +126,10 @@ public class AsistenciaEventoManagerService{
 
         var evento = eventoService.findById(asistenciaEventoDto.getEvento().getId());
 
-        asistenciaEvento.setPersona(miembro);
-        asistenciaEvento.setEvento(evento);
+        if(miembro!=null && evento!=null){
+            miembro.agregarAsistencia(asistenciaEvento);
+            evento.agregarAsistencia(asistenciaEvento);
+        }
 
         return asistenciaEvento;
     }

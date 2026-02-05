@@ -48,17 +48,38 @@ public class BarrioService {
 
     //accesivilidad solamente desde el paquete
     public Barrio updateBarrioFromDTO(Barrio barrio, BarrioDTO barrioDTO){
-        barrio.setId(barrioDTO.getIdBarrio());
-        barrio.setNombre(barrioDTO.getNombreBarrio());
+
+        if(barrio.getId()!=null || barrioDTO.getIdBarrio()!=null)
+            barrio.setId(barrioDTO.getIdBarrio());
+        else
+            System.out.println("El ID del barrio es nulo al actualizar, se asignará uno nuevo al guardar");
+
+        if(barrio.getNombre()!=null || barrioDTO.getNombreBarrio()!=null)
+            barrio.setNombre(barrioDTO.getNombreBarrio());
+        else
+            throw new IllegalArgumentException("El nombre del barrio no puede ser nulo al actualizar");
+
         barrio.setComuna(comunaService.updateComunaFromDTO(barrio.getComuna(), barrioDTO.getComunaDTO()));
+
         return barrio;
     }
 
     public BarrioDTO convertToDTO(Barrio barrio){
+
         BarrioDTO barrioDTO = new BarrioDTO();
-        barrioDTO.setIdBarrio(barrioDTO.getIdBarrio());
-        barrioDTO.setNombreBarrio(barrioDTO.getNombreBarrio());
+
+        var id = barrio.getId() != null ? barrio.getId() : null;
+        barrioDTO.setIdBarrio(id);
+        if(id==null)
+            throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n El ID del barrio no puede ser nulo al convertir a DTO");
+
+        var nombre = barrio.getNombre()!=null ? barrio.getNombre():null;
+        barrioDTO.setNombreBarrio(nombre);
+        if(nombre==null)
+            throw new IllegalArgumentException("El nombre del barrio no puede ser nulo al convertir a DTO");
+
         barrioDTO.setComunaDTO(comunaService.convertToDTO(barrio.getComuna()));
+
         return barrioDTO;
     }
 

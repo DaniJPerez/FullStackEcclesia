@@ -32,6 +32,11 @@ public class AsistenciaEventoService {
     }
 
     public List<AsistenciaEvento> getAsistenciasByMiembroId(Long miembroId) {
+        try{
+
+        }catch (IllegalArgumentException ex){
+            throw new EntityNotFoundException("Miembro no encontrado con id " + miembroId + ex.getMessage());
+        }
         return asistenciaEventoRepository.findByPersona_NumeroIdentificacion(miembroId);
     }
 
@@ -74,12 +79,17 @@ public class AsistenciaEventoService {
     @Transactional
     public AsistenciaEvento update(Long id, AsistenciaEventoDto asistenciaEventoDto) {
         AsistenciaEvento asistenciaEvento = getAsistenciaById(id);
+
         //usa el intermediario para actualizar la asistencia dentro de las otras tablas relacionadas con asistenciaEvento
         asistenciaEventoManagerService.actualizarAsistenciaMiembro(asistenciaEvento);
-        asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
-        asistenciaEvento.setAsistencia(Boolean.parseBoolean(asistenciaEventoDto
-                .getEstadoAsistencia()
-                .toUpperCase()));
+    /// Por Acá quede con las actializaciones
+        if(asistenciaEventoDto.getFechaAsistencia()!= null)
+            asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
+
+        if(asistenciaEventoDto.getEstadoAsistencia()!= null )
+            asistenciaEvento.setAsistencia(Boolean.parseBoolean(asistenciaEventoDto
+                    .getEstadoAsistencia()
+                    .toUpperCase()));
 
         return asistenciaEvento;
 

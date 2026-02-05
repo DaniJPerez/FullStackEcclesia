@@ -24,14 +24,14 @@ public class EntidadTerritorialServices {
 
     public EntidadTerritorial save(EntidadTerritorialDto entidadTerritorialDTo){
         EntidadTerritorial entidadTerritorial = new EntidadTerritorial();
-        entidadTerritorial = updateFromDto(entidadTerritorialDTo, entidadTerritorial);
+        entidadTerritorial = updateFromDto( entidadTerritorial, entidadTerritorialDTo);
 
         return entidadTerritorialRepository.save(entidadTerritorial);
     }
 
     public EntidadTerritorial update(Long id, EntidadTerritorialDto entidadTerritorialDTo){
         EntidadTerritorial entidadTerritorial = findByIdEntidadTerritorial(id);
-        entidadTerritorial = updateFromDto(entidadTerritorialDTo, entidadTerritorial);
+        entidadTerritorial = updateFromDto(entidadTerritorial, entidadTerritorialDTo);
 
         return entidadTerritorial;
     }
@@ -41,7 +41,7 @@ public class EntidadTerritorialServices {
         entidadTerritorialRepository.delete(entidadTerritorial);
     }
 
-    public EntidadTerritorial updateFromDto(EntidadTerritorialDto entidadTerritorialDto, EntidadTerritorial entidadTerritorial){
+    public EntidadTerritorial updateFromDto( EntidadTerritorial entidadTerritorial, EntidadTerritorialDto entidadTerritorialDto){
         entidadTerritorial.setIdEntidadTerritorial(entidadTerritorialDto.getIdEntidad());
         entidadTerritorial.setNombreEntidadTerritorial(entidadTerritorialDto.getNombreEntidad());
         entidadTerritorial.setPais(paisServices.findByIdPais(entidadTerritorialDto.getPais().getIdPais()));

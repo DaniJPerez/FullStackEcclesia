@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class CiudadDTO {
     private Long idCiudad;
     private String nombreCiudad;
+    private EntidadTerritorialDto entidadTerritorialDto;
     private UsuarioDto usuarioCreador;
 }
