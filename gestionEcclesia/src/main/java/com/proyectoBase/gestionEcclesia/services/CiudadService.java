@@ -47,7 +47,7 @@ public class CiudadService {
         ciudadRepository.delete(ciudad);
     }
 
-    public Ciudad updateCiudadFromDTO(Ciudad ciudad,CiudadDTO ciudadDTO){
+    public Ciudad updateCiudadFromDTO(Ciudad ciudad, CiudadDTO ciudadDTO){
         var id = ciudadDTO != null || ciudadDTO.getIdCiudad() != null ? ciudadDTO.getIdCiudad() : null;
         ciudad.setIdCiudad(id);
         if(id==null)

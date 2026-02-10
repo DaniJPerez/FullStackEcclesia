@@ -30,6 +30,9 @@ public class Comuna {
     @JoinColumn(name = "id_ciudad", foreignKey = @ForeignKey(name="FK_COMUNA_CIUDAD"))
     private Ciudad ciudad;
 
+    @Column(name="Descripcion", length = 55)
+    private String descripcion;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_comunas_usuario_registro"))
     private Usuario usuarioRegirstro;

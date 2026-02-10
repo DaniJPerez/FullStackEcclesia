@@ -51,16 +51,50 @@ public class ComunaService {
 
 
      public Comuna updateComunaFromDTO(Comuna comuna, ComunaDTO comunaDTO){
-        comuna.setId(comunaDTO.getIdComuna());
-        comuna.setNombre(comunaDTO.getDescripcionComuna());
+
+        var id = comuna.getId() != null || comunaDTO.getIdComuna() !=null ? comunaDTO.getIdComuna(): null ;
+        comuna.setId(id);
+        if(id==null)
+            System.out.println("No hay una Id Expesificada se estara creando una nueva instancia de comuna");
+
+
+        var nombre = comunaDTO.getNombreComuna() != null || comuna.getNombre() !=null ? comuna.getNombre() : null;
+        comuna.setNombre(nombre);
+        if(nombre==null)
+            System.out.println("No hay un nombre Expesificado");
+
+
+        var descripcion = comunaDTO.getDescripcionComuna() != null || comuna.getDescripcion() !=null ? comunaDTO.getDescripcionComuna() : null;
+        comuna.setDescripcion(descripcion);
+        if (descripcion==null)
+            System.out.println("No hay una descripcion Expesificada");
+
+        
         comuna.setCiudad(ciudadService.updateCiudadFromDTO(comuna.getCiudad(),comunaDTO.getCiudadDTO()));
+
         return comuna;
     }
 
     public ComunaDTO convertToDTO(Comuna comuna){
         ComunaDTO comunaDTO= new ComunaDTO();
-        comunaDTO.setIdComuna(comuna.getId());
-        comunaDTO.setDescripcionComuna(comuna.getNombre());
+        var id = comuna.getId()!=null? comuna.getId():null;
+        comunaDTO.setIdComuna(id);
+        if(id==null)
+            throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de comunaDTO");
+
+        var nombre = comuna.getNombre() != null ? comuna.getNombre() : null;
+        comunaDTO.setNombreComuna(nombre);
+        if(nombre==null)
+            throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un nombre Expesificado en instancia de comunaDTO");
+
+        var descripcion = comuna.getDescripcion() != null ? comuna.getDescripcion() : null;
+        if(descripcion!=null)
+            comunaDTO.setDescripcionComuna(descripcion);
+
+        var ciudadDTO = ciudadService.convertToDTO(comuna.getCiudad());
+
+        comunaDTO.setCiudadDTO(ciudadDTO);
+
         return comunaDTO;
     }
 

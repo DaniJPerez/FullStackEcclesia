@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class ComunaDTO {
     private Long idComuna;
+    private String nombreComuna;
     private String descripcionComuna;
     private CiudadDTO ciudadDTO;
     private UsuarioDto usuarioCreador;

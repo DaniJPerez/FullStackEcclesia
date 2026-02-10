@@ -73,11 +73,33 @@ public class ContribucionService {
         contribucionRepository.delete(contribucion);
     }
 
-    private void updateContribucionFromDTO(Contribucion contribucion, ContribucionDTO contribucionDTO) {
-      contribucion.setId(contribucionDTO.getId());
-      contribucion.setPersona(miembroService.updateMiembroFromDTO(contribucion.getPersona(), contribucionDTO.getMiembro()));
-      contribucion.setFechaContribucion(contribucionDTO.getFechaContribucion());
-      contribucion.setMonto(contribucionDTO.getMonto());
+    private Contribucion updateContribucionFromDTO(Contribucion contribucion, ContribucionDTO contribucionDTO) {
+         var id = contribucion.getId() != null || contribucionDTO.getId() != null ? contribucionDTO.getId() : null;
+             if (id == null)
+                 System.out.println("No hay una Id Expesificada se estara creando una nueva instancia");
+             else
+                 contribucion.setId(id);
+
+         var fechaContribucion = contribucionDTO.getFechaContribucion() != null || contribucion.getFechaContribucion() != null ? contribucionDTO.getFechaContribucion() : null;
+             if(fechaContribucion==null)
+                 System.out.println("No hay una fecha de contribucion Expesificada");
+             else
+                 contribucion.setFechaContribucion(fechaContribucion);
+
+         contribucion.setPersona(miembroService.updateMiembroFromDTO(contribucion.getPersona(), contribucionDTO.getMiembro()));
+         var monto = contribucionDTO.getMonto() != null || contribucion.getMonto() != null ? contribucionDTO.getMonto() : null;
+           if(monto==null)
+               throw new IllegalArgumentException("No hay un monto Expesificado");
+           else
+               contribucion.setMonto(monto);
+
+         var descripcion = contribucionDTO.getObservaciones() != null || contribucion.getDescripcion() != null ? contribucionDTO.getObservaciones() : null;
+           if(descripcion==null)
+               System.out.println("No hay una descripcion Expesificada");
+           else
+               contribucion.setDescripcion(descripcion);
+
+         return contribucion;
 
     }
 
@@ -85,13 +107,34 @@ public class ContribucionService {
         ContribucionDTO contribucionDTO = new ContribucionDTO();
 
         // Asegúrate de que estos métodos estén definidos en la clase base o usa instanceof
-        contribucionDTO.setId(contribucion.getId());
-        contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
-        contribucionDTO.setObservaciones(contribucion.getDescripcion());
+        var id = contribucion.getId() != null ? contribucion.getId() : null;
+            if(id==null)
+                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de contribucion");
+            else
+             contribucionDTO.setId(id);
+
+        var fechaContribucion = contribucion.getFechaContribucion() != null ? contribucion.getFechaContribucion() : null;
+            if(fechaContribucion==null)
+                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una fecha de contribucion Expesificada en instancia de contribucion");
+            else
+            contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
+
+        var observaciones= contribucion.getDescripcion()!=null ? contribucion.getDescripcion(): null;
+            if(observaciones==null)
+                System.out.println("¡¡¡ P R E C A U C I O N !!! \n : No hay una descripcion Expesificada en instancia de contribucion");
+            else
+                contribucionDTO.setObservaciones(contribucion.getDescripcion());
 
         MiembroDTO miembroDTO = miembroService.convertToDTO(contribucion.getPersona());
         contribucionDTO.setMiembro(miembroDTO);
-        contribucionDTO.setMonto(contribucion.getMonto());
+
+        var monto = contribucion.getMonto() != null ? contribucion.getMonto() : null;
+            if(monto==null)
+                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un monto Expesificado en instancia de contribucion");
+            else
+                contribucionDTO.setMonto(contribucion.getMonto());
+
+
         return contribucionDTO;
     }
 
