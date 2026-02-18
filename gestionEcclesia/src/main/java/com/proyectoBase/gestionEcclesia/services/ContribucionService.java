@@ -73,27 +73,37 @@ public class ContribucionService {
         contribucionRepository.delete(contribucion);
     }
 
+    @Transactional
     private Contribucion updateContribucionFromDTO(Contribucion contribucion, ContribucionDTO contribucionDTO) {
-         var id = contribucion.getId() != null || contribucionDTO.getId() != null ? contribucionDTO.getId() : null;
+
+         var id = (contribucionDTO != null && contribucionDTO.getId() != null&& contribucionDTO.getId().toString().isEmpty())
+                 ? contribucionDTO.getId()
+                 : (contribucion != null ? contribucion.getId() : null);
              if (id == null)
                  System.out.println("No hay una Id Expesificada se estara creando una nueva instancia");
              else
                  contribucion.setId(id);
 
-         var fechaContribucion = contribucionDTO.getFechaContribucion() != null || contribucion.getFechaContribucion() != null ? contribucionDTO.getFechaContribucion() : null;
+         var fechaContribucion = (contribucionDTO != null && contribucionDTO.getFechaContribucion() != null && !contribucionDTO.getFechaContribucion().toString().isEmpty())
+                 ? contribucionDTO.getFechaContribucion()
+                 : (contribucion != null ? contribucion.getFechaContribucion() : null);
              if(fechaContribucion==null)
                  System.out.println("No hay una fecha de contribucion Expesificada");
              else
                  contribucion.setFechaContribucion(fechaContribucion);
 
          contribucion.setPersona(miembroService.updateMiembroFromDTO(contribucion.getPersona(), contribucionDTO.getMiembro()));
+
          var monto = contribucionDTO.getMonto() != null || contribucion.getMonto() != null ? contribucionDTO.getMonto() : null;
            if(monto==null)
                throw new IllegalArgumentException("No hay un monto Expesificado");
            else
                contribucion.setMonto(monto);
 
-         var descripcion = contribucionDTO.getObservaciones() != null || contribucion.getDescripcion() != null ? contribucionDTO.getObservaciones() : null;
+         var descripcion = (contribucionDTO != null && contribucionDTO.getObservaciones() != null && !contribucionDTO.getObservaciones().isEmpty())
+                           ? contribucionDTO.getObservaciones()
+                           : (contribucion != null && contribucion.getDescripcion() !=null && !contribucion.getDescripcion().isEmpty()
+                           ? contribucion.getDescripcion() : null);
            if(descripcion==null)
                System.out.println("No hay una descripcion Expesificada");
            else
@@ -111,13 +121,13 @@ public class ContribucionService {
             if(id==null)
                 throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de contribucion");
             else
-             contribucionDTO.setId(id);
+                contribucionDTO.setId(id);
 
         var fechaContribucion = contribucion.getFechaContribucion() != null ? contribucion.getFechaContribucion() : null;
             if(fechaContribucion==null)
                 throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una fecha de contribucion Expesificada en instancia de contribucion");
             else
-            contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
+                contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
 
         var observaciones= contribucion.getDescripcion()!=null ? contribucion.getDescripcion(): null;
             if(observaciones==null)

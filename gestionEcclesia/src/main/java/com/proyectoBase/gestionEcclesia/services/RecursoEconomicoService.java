@@ -38,14 +38,14 @@ public class RecursoEconomicoService {
     @Transactional
     public RecursoEconomico save(RecursoEconomicoDTO recursoEconomicoDTO) {
         RecursoEconomico recursoEconomico = new RecursoEconomico();
-        recursoEconomico = updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
+        updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
         return recursoEconomicoRepository.save(recursoEconomico);
     }
 
     @Transactional
     public RecursoEconomico update(Long id, RecursoEconomicoDTO recursoEconomicoDTO) {
         RecursoEconomico recursoEconomico = findById(id);
-        recursoEconomico= updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
+        updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
         return recursoEconomicoRepository.save(recursoEconomico);
     }
 
@@ -56,11 +56,21 @@ public class RecursoEconomicoService {
     }
 
     public RecursoEconomico updateRecursoEconomicoFromDTO(RecursoEconomico recursoEconomico, RecursoEconomicoDTO recursoEconomicoDTO) {
-        recursoEconomico.setDescripcionRecurso(recursoEconomicoDTO.getDescripcion());
+        if(recursoEconomico!=null && recursoEconomicoDTO!=null){
+
+        var descripcion = (recursoEconomicoDTO.getDescripcion() !=null)
+                ? recursoEconomicoDTO.getDescripcion()
+                : recursoEconomico.getDescripcionRecurso();
+        if(descripcion==null)
+            System.out.println("No se proporcionó una descripción para el recurso económico, se mantendrá la descripción actual o se asignará una nueva al guardar");
+        else
+            recursoEconomico.setDescripcionRecurso(recursoEconomicoDTO.getDescripcion());
         recursoEconomico.setFechaAdquisicion(recursoEconomicoDTO.getFecha());
         recursoEconomico.setValorRecurso(recursoEconomicoDTO.getMonto());
         recursoEconomico.setDescripcionRecurso(recursoEconomicoDTO.getObservaciones());
         return recursoEconomico;
+        }else
+            throw new IllegalArgumentException("El recurso económico o el DTO proporcionado es nulo. No se puede actualizar el recurso económico.");
     }
 
     public RecursoEconomicoDTO convertToDTO(RecursoEconomico recursoEconomico) {

@@ -48,18 +48,25 @@ public class BarrioService {
 
     //accesivilidad solamente desde el paquete
     public Barrio updateBarrioFromDTO(Barrio barrio, BarrioDTO barrioDTO){
+        var id = (barrioDTO != null && barrioDTO.getIdBarrio() != null)
+                ? barrioDTO.getIdBarrio()
+                : (barrio != null ? barrio.getId() : null);
 
-        if(barrio.getId()!=null || barrioDTO.getIdBarrio()!=null)
-            barrio.setId(barrioDTO.getIdBarrio());
+        if(id!=null)
+            barrio.setId(id);
         else
             System.out.println("El ID del barrio es nulo al actualizar, se asignará uno nuevo al guardar");
 
-        if(barrio.getNombre()!=null || barrioDTO.getNombreBarrio()!=null)
-            barrio.setNombre(barrioDTO.getNombreBarrio());
+        var nombre = (barrioDTO != null && barrioDTO.getNombreBarrio() != null)
+                ? barrioDTO.getNombreBarrio()
+                : (barrio != null ? barrio.getNombre() : null);
+        if(nombre!=null)
+            barrio.setNombre(nombre);
         else
             throw new IllegalArgumentException("El nombre del barrio no puede ser nulo al actualizar");
 
         barrio.setComuna(comunaService.updateComunaFromDTO(barrio.getComuna(), barrioDTO.getComunaDTO()));
+
 
         return barrio;
     }
@@ -69,14 +76,16 @@ public class BarrioService {
         BarrioDTO barrioDTO = new BarrioDTO();
 
         var id = barrio.getId() != null ? barrio.getId() : null;
-        barrioDTO.setIdBarrio(id);
         if(id==null)
             throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n El ID del barrio no puede ser nulo al convertir a DTO");
+        else
+            barrioDTO.setIdBarrio(id);
 
         var nombre = barrio.getNombre()!=null ? barrio.getNombre():null;
-        barrioDTO.setNombreBarrio(nombre);
         if(nombre==null)
             throw new IllegalArgumentException("El nombre del barrio no puede ser nulo al convertir a DTO");
+        else
+            barrioDTO.setNombreBarrio(nombre);
 
         barrioDTO.setComunaDTO(comunaService.convertToDTO(barrio.getComuna()));
 

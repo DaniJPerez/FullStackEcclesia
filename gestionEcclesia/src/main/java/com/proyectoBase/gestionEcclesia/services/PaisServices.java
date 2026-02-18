@@ -27,13 +27,13 @@ public class PaisServices {
 
     public Pais savePais(PaisDto pais) {
         Pais nuevoPais = new Pais();
-        nuevoPais = updatePaisFromDto(nuevoPais, pais);
+        updatePaisFromDto(nuevoPais, pais);
         return paisRepository.save(nuevoPais);
     }
 
     public Pais updatePais(Long idPais, PaisDto paisDto) {
         Pais paisExistente = findByIdPais(idPais);
-        paisExistente = updatePaisFromDto(paisExistente, paisDto);
+        updatePaisFromDto(paisExistente, paisDto);
         return paisRepository.save(paisExistente);
     }
 
@@ -42,18 +42,65 @@ public class PaisServices {
     }
 
     public Pais updatePaisFromDto(Pais pais,PaisDto paisDto) {
-        pais.setId(paisDto.getIdPais());
-        pais.setNombrePais(paisDto.getNombrePais());
-        pais.setDescripcion(paisDto.getDescripcion());
-        return pais;
+        if(pais!=null && paisDto!=null){
+            var id = (paisDto.getIdPais() != null)
+                    ? paisDto.getIdPais()
+                    : pais.getId();
+
+            if(id==null)
+                System.out.println("El ID del pais es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                pais.setId(paisDto.getIdPais());
+
+            var nombre = (paisDto.getNombrePais() != null)
+                    ? paisDto.getNombrePais()
+                    : pais.getNombrePais();
+            if (nombre==null)
+                System.out.println("El nombre del pais es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                pais.setNombrePais(paisDto.getNombrePais());
+
+
+            var descripcion = (paisDto.getDescripcion() != null)
+                    ? paisDto.getDescripcion()
+                    : pais.getDescripcion();
+            if (descripcion==null)
+                System.out.println("La descripción del pais es nula al actualizar");
+            else
+                pais.setDescripcion(paisDto.getDescripcion());
+
+            return pais;
+        }else
+            throw new IllegalArgumentException("HUBO UN ERROR AL CONVERTIR EL DTO A ENTIDAD, EL DTO O LA ENTIDAD SON NULOS");
     }
 
     public PaisDto convertToDto(Pais pais) {
-        PaisDto paisDto = new PaisDto();
-        paisDto.setIdPais(pais.getId());
-        paisDto.setNombrePais(pais.getNombrePais());
-        paisDto.setDescripcion(pais.getDescripcion());
-        return paisDto;
+        if(pais!=null){
+            PaisDto paisDto = new PaisDto();
+
+            var id = pais.getId() != null ? pais.getId() : null;
+            if(id==null)
+                throw new IllegalArgumentException("El ID del pais es nulo al convertir a DTO, HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO");
+            else
+                 paisDto.setIdPais(pais.getId());
+
+
+            var nombre = pais.getNombrePais() != null ? pais.getNombrePais() : null;
+            if(nombre==null)
+                throw new IllegalArgumentException("El nombre del pais es nulo al convertir a DTO, HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO");
+            else
+                paisDto.setNombrePais(pais.getNombrePais());
+
+
+            var descripcion = pais.getDescripcion() != null ? pais.getDescripcion() : null;
+            if(descripcion==null)
+                System.out.println("La descripción del pais es nula al convertir a DTO, No se asignará una descripción vacía al guardar");
+            else
+                paisDto.setDescripcion(pais.getDescripcion());
+
+            return paisDto;
+        }else
+            throw new IllegalArgumentException("HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO, EL DTO O LA ENTIDAD SON NULOS");
     }
 
 }

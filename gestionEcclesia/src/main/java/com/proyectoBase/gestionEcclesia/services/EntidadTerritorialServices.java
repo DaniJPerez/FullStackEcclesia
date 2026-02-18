@@ -42,8 +42,22 @@ public class EntidadTerritorialServices {
     }
 
     public EntidadTerritorial updateFromDto( EntidadTerritorial entidadTerritorial, EntidadTerritorialDto entidadTerritorialDto){
-        entidadTerritorial.setIdEntidadTerritorial(entidadTerritorialDto.getIdEntidad());
-        entidadTerritorial.setNombreEntidadTerritorial(entidadTerritorialDto.getNombreEntidad());
+        var id = (entidadTerritorialDto != null && entidadTerritorialDto.getIdEntidad() != null)
+                ? entidadTerritorialDto.getIdEntidad()
+                : (entidadTerritorial != null ? entidadTerritorial.getIdEntidadTerritorial() : null);
+        if(id==null)
+            System.out.println("El ID de la entidad territorial es nulo al actualizar, se asignará uno nuevo al guardar");
+        else
+            entidadTerritorial.setIdEntidadTerritorial(entidadTerritorialDto.getIdEntidad());
+
+        var nombre = (entidadTerritorialDto!= null && entidadTerritorialDto.getNombreEntidad() != null && !entidadTerritorialDto.getNombreEntidad().isEmpty())
+                ? entidadTerritorialDto.getNombreEntidad()
+                : (entidadTerritorial != null ? entidadTerritorial.getNombreEntidadTerritorial() : null);
+        if(nombre==null)
+            throw new IllegalArgumentException("El nombre de la entidad territorial no puede ser nulo al actualizar");
+        else
+            entidadTerritorial.setNombreEntidadTerritorial(nombre);
+
         entidadTerritorial.setPais(paisServices.findByIdPais(entidadTerritorialDto.getPais().getIdPais()));
 
         return entidadTerritorial;
@@ -51,9 +65,21 @@ public class EntidadTerritorialServices {
 
     public EntidadTerritorialDto convertToDto(EntidadTerritorial entidadTerritorial){
         EntidadTerritorialDto entidadTerritorialDto = new EntidadTerritorialDto();
-        entidadTerritorialDto.setIdEntidad(entidadTerritorial.getIdEntidadTerritorial());
-        entidadTerritorialDto.setNombreEntidad(entidadTerritorial.getNombreEntidadTerritorial());
+
+        var id = entidadTerritorial != null || entidadTerritorial.getIdEntidadTerritorial() != null ? entidadTerritorial.getIdEntidadTerritorial() : null;
+        if(id==null)
+            throw new IllegalArgumentException("El ID de la entidad territorial es nulo al convertir a DTO");
+        else
+            entidadTerritorialDto.setIdEntidad(id);
+
+        var nombre = entidadTerritorial != null || entidadTerritorial.getNombreEntidadTerritorial() != null ? entidadTerritorial.getNombreEntidadTerritorial() : null;
+        if(nombre==null)
+            throw new IllegalArgumentException("El nombre de la entidad territorial es nulo al convertir a DTO");
+        else
+            entidadTerritorialDto.setNombreEntidad(entidadTerritorial.getNombreEntidadTerritorial());
+
         entidadTerritorialDto.setPais(paisServices.convertToDto(entidadTerritorial.getPais()));
+
         return entidadTerritorialDto;
     }
 }

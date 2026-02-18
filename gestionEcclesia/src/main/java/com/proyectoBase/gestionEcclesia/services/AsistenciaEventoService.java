@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -144,12 +145,20 @@ public class AsistenciaEventoService {
     }
 
     public AsistenciaEvento updateAsistenciaEventoFromDto(AsistenciaEvento asistenciaEvento,AsistenciaEventoDto asistenciaEventoDto) {
+        if(asistenciaEvento==null || asistenciaEventoDto==null)
+            System.out.println("El objeto asistenciaEvento o asistenciaEventoDto es nulo al actualizar, se asignará uno nuevo al guardar");
+        else
+            asistenciaEvento.setIdAsistenciaEvento(asistenciaEventoDto.getIdAsistencia());
 
-        asistenciaEvento.setIdAsistenciaEvento(asistenciaEventoDto.getIdAsistencia());
-        asistenciaEvento= asistenciaEventoManagerService
+        asistenciaEventoManagerService
                         .convertirAEntidad(asistenciaEventoDto);
 
-        asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
+        if(asistenciaEvento.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia().toString().isEmpty()){
+            System.out.println("La fecha de asistencia es nula al actualizar, se asignará una nueva fecha al guardar");
+            asistenciaEvento.setFechaAsistencia(LocalDate.now());
+        }
+        else
+            asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
 
         return asistenciaEvento;
     }
@@ -157,11 +166,19 @@ public class AsistenciaEventoService {
 
     public AsistenciaEventoDto convertToDto(AsistenciaEvento asistenciaEvento) {
         AsistenciaEventoDto asistenciaEventoDto = new AsistenciaEventoDto();
-        asistenciaEventoDto.setIdAsistencia(asistenciaEvento.getIdAsistenciaEvento());
+        if(asistenciaEvento==null)
+            throw new IllegalArgumentException("La asistenciaEvento no puede ser nula al convertir a DTO");
+        else
+            asistenciaEventoDto.setIdAsistencia(asistenciaEvento.getIdAsistenciaEvento());
+
         //Usar el manager para convertir las entidades relacionadas a AsistenciaEvento a dto
         asistenciaEventoManagerService.convertirADto(asistenciaEvento);
 
-        asistenciaEventoDto.setFechaAsistencia(asistenciaEvento.getFechaAsistencia());
+        if(asistenciaEvento.getFechaAsistencia()==null || asistenciaEvento.getFechaAsistencia().toString().isEmpty())
+            throw new IllegalArgumentException("La fecha de asistencia no puede ser nula o vacía al convertir a DTO");
+        else
+            asistenciaEventoDto.setFechaAsistencia(asistenciaEvento.getFechaAsistencia());
+
         return asistenciaEventoDto;
     }
 

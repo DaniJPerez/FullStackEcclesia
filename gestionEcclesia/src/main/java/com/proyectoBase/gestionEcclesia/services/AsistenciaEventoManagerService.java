@@ -130,6 +130,8 @@ public class AsistenciaEventoManagerService{
             miembro.agregarAsistencia(asistenciaEvento);
             evento.agregarAsistencia(asistenciaEvento);
         }
+        else
+            throw new IllegalArgumentException("No se pudo convertir a entidad, el miembro o el evento no existen");
 
         return asistenciaEvento;
     }

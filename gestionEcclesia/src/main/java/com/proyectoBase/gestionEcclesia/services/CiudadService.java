@@ -48,27 +48,25 @@ public class CiudadService {
     }
 
     public Ciudad updateCiudadFromDTO(Ciudad ciudad, CiudadDTO ciudadDTO){
-        var id = ciudadDTO != null || ciudadDTO.getIdCiudad() != null ? ciudadDTO.getIdCiudad() : null;
-        ciudad.setIdCiudad(id);
+        var id = ciudadDTO != null && ciudadDTO.getIdCiudad() != null
+                ? ciudadDTO.getIdCiudad()
+                : (ciudad != null ? ciudad.getIdCiudad() : null);
+
         if(id==null)
             System.out.println("El ID de la ciudad es nulo al actualizar, se asignará uno nuevo al guardar");
+        else
+            ciudad.setIdCiudad(id);
 
+        var nombre = ciudadDTO != null && ciudadDTO.getNombreCiudad() != null
+                ? ciudadDTO.getNombreCiudad()
+                : (ciudad != null ? ciudad.getNombreCiudad() : null);
 
-        var nombre = ciudadDTO != null || ciudadDTO.getNombreCiudad() != null ? ciudadDTO.getNombreCiudad() : null;
-        ciudad.setNombreCiudad(nombre);
         if(nombre==null)
             throw new IllegalArgumentException("El nombre de la ciudad no puede ser nulo al actualizar");
+        else
+            ciudad.setNombreCiudad(nombre);
 
-        var entidadTerritorial = ciudad.getEntidadTerritorial()!=null || ciudadDTO.getEntidadTerritorialDto()!= null ?
-                entidadTerritorialServices.updateFromDto(
-                        ciudad.getEntidadTerritorial(),
-                        ciudadDTO.getEntidadTerritorialDto()
-                ) : null;
-
-        if(entidadTerritorial==null)
-            throw new IllegalArgumentException("La entidad territorial no puede ser nula al actualizar la ciudad");
-
-        ciudad.setEntidadTerritorial(entidadTerritorial);
+        ciudad.setEntidadTerritorial(entidadTerritorialServices.updateFromDto(ciudad.getEntidadTerritorial(), ciudadDTO.getEntidadTerritorialDto()));
 
         return ciudad;
     }
@@ -77,23 +75,24 @@ public class CiudadService {
         CiudadDTO ciudadDTO = new CiudadDTO();
 
         var id = ciudad.getIdCiudad() != null ? ciudad.getIdCiudad() : null;
-        ciudadDTO.setIdCiudad(id);
         if(id==null)
             System.out.println("El ID de la ciudad es nulo al convertir a DTO");
-
+        else
+            ciudadDTO.setIdCiudad(id);
 
         var nombre = ciudad.getNombreCiudad() != null ? ciudad.getNombreCiudad() : null;
-        ciudadDTO.setNombreCiudad(nombre);
         if(nombre==null)
             throw new IllegalArgumentException("El nombre de la ciudad no puede ser nulo al convertir");
+        else
+            ciudadDTO.setNombreCiudad(nombre);
 
 
         var entidadTerritorialDto = ciudad.getEntidadTerritorial() != null ?
                 entidadTerritorialServices.convertToDto(ciudad.getEntidadTerritorial()) : null;
         if(entidadTerritorialDto==null)
             throw new IllegalArgumentException("La entidad territorial no puede ser nula al convertir la ciudad a DTO");
-        ciudadDTO.setEntidadTerritorialDto(entidadTerritorialDto);
-
+        else
+            ciudadDTO.setEntidadTerritorialDto(entidadTerritorialDto);
 
         return ciudadDTO;
     }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -50,67 +51,125 @@ public class IglesiaServices {
 
     public Iglesia updateIglesiaFromDTO(Iglesia iglesia, IglesiaDTO iglesiaDTO){
 
-        iglesia.setIdIglesia(iglesia.getIdIglesia());
-        iglesia.setNombreIglesia(iglesiaDTO.getNombreIglesia());
-        iglesia.setNumeroIglesiaZona(iglesiaDTO.getNumeroIglesia());
-        iglesia.setTelefonoContacto(iglesiaDTO.getTelefonoIglesia());
-        iglesia.setPastor(miembroService.updateMiembroFromDTO(iglesia.getPastor(), iglesiaDTO.getPastorIglesia()));
-        iglesia.setDireccion(direccionService.updateDireccionFromDTO(iglesia.getDireccion(), iglesiaDTO.getDireccion()));
-        ZonaAdministrativa zona = zonaAdministrativaServices.updateZonaAdministrativaFromDto(
-                iglesia.getZonaAdministrativa(),
-                iglesiaDTO.getZonaAbministrativa()
-        );
+        if(iglesiaDTO.getIdIglesia() != null && iglesia!= null){
 
-        iglesia.setZonaAdministrativa(zona);
+            var id= (iglesiaDTO.getIdIglesia() != null)
+                    ? iglesiaDTO.getIdIglesia()
+                    : iglesia.getIdIglesia();
+            if(id==null)
+                System.out.println("El ID de la iglesia es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                iglesia.setIdIglesia(id);
 
-        List<Persona> miembros = iglesiaDTO.getMiembros().stream()
-                .map(personaDto->{
-                    return miembroService.updateMiembroFromDTO(new Persona(), personaDto);
-                }).toList();
+            var nombre = (iglesiaDTO.getNombreIglesia() != null)
+                    ? iglesiaDTO.getNombreIglesia()
+                    : iglesia.getNombreIglesia();
+            if(nombre==null)
+                throw new IllegalArgumentException("El nombre de la iglesia no puede ser nulo al actualizar");
+            else
+                iglesia.setNombreIglesia(nombre);
 
-        iglesia.setMiembros(miembros);
+            if(Objects.nonNull(iglesiaDTO.getNumeroIglesia()))
+                iglesia.setNumeroIglesiaZona(iglesiaDTO.getNumeroIglesia());
+            else
+                System.out.println("El numero de la iglesia es nulo al actualizar, se asignará uno nuevo al guardar");
 
-        List<RecursoEconomico> recursos = iglesiaDTO.getRecursosEconomicos().stream()
-                .map(recursoDto->{
-                    return recursoEconomicoService.updateRecursoEconomicoFromDTO(new RecursoEconomico(), recursoDto);
-                }).toList();
+            var telefono = (iglesiaDTO.getTelefonoIglesia()!= null && !iglesiaDTO.getTelefonoIglesia().isEmpty())
+                    ? iglesiaDTO.getTelefonoIglesia()
+                    : iglesia.getTelefonoContacto();
+            if(telefono==null)
+                System.out.println("El telefono de la iglesia es nulo al actualizar, No se asignará uno nuevo al guardar");
+            else
+                iglesia.setTelefonoContacto(iglesiaDTO.getTelefonoIglesia());
 
-        recursos.forEach(recursoEconomico -> {
-            iglesia.getRecursos().add(recursoEconomico);
-        });
+            iglesia.setPastor(miembroService.updateMiembroFromDTO(iglesia.getPastor(), iglesiaDTO.getPastorIglesia()));
 
-        return iglesia;
+            iglesia.setDireccion(direccionService.updateDireccionFromDTO(iglesia.getDireccion(), iglesiaDTO.getDireccion()));
+
+            ZonaAdministrativa zona = zonaAdministrativaServices.updateZonaAdministrativaFromDto(
+                    iglesia.getZonaAdministrativa(),
+                    iglesiaDTO.getZonaAbministrativa()
+            );
+
+            if(zona!=null)
+                iglesia.setZonaAdministrativa(zona);
+            else
+                System.out.println("La zona administrativa de la iglesia es nula al actualizar la info de Iglesia, No se asignará una nueva zona administrativa al guardar");
+
+            List<Persona> miembros = iglesiaDTO.getMiembros().stream()
+                    .map(personaDto->{
+                        return miembroService.updateMiembroFromDTO(new Persona(), personaDto);
+                    }).toList();
+
+            iglesia.setMiembros(miembros);
+
+            List<RecursoEconomico> recursos = iglesiaDTO.getRecursosEconomicos().stream()
+                    .map(recursoDto->{
+                        return recursoEconomicoService.updateRecursoEconomicoFromDTO(new RecursoEconomico(), recursoDto);
+                    }).toList();
+
+            recursos.forEach(recursoEconomico -> {
+                iglesia.getRecursos().add(recursoEconomico);
+            });
+
+            return iglesia;
+        }else
+            throw new IllegalArgumentException("El ID de la iglesia es nulo al actualizar, no se puede actualizar una iglesia sin ID");
 
     }
 
     public IglesiaDTO convertToDTO(Iglesia iglesia){
+        if(iglesia!=null){
 
-        IglesiaDTO iglesiaDTO = new IglesiaDTO();
-        iglesiaDTO.setIdIglesia(iglesia.getIdIglesia());
-        iglesiaDTO.setNombreIglesia(iglesia.getNombreIglesia());
-        iglesiaDTO.setNumeroIglesia(iglesia.getNumeroIglesiaZona());
-        iglesiaDTO.setTelefonoIglesia(iglesia.getTelefonoContacto());
-        iglesiaDTO.setPastorIglesia(miembroService.convertToDTO(iglesia.getPastor()));
-        iglesiaDTO.setDireccion(direccionService.converToDTO(iglesia.getDireccion()));
+            IglesiaDTO iglesiaDTO = new IglesiaDTO();
 
-        iglesiaDTO.setZonaAbministrativa(zonaAdministrativaServices.convertToDto(iglesia.getZonaAdministrativa()));
+            var id = iglesia.getIdIglesia() != null ? iglesia.getIdIglesia() : null;
+            if(id==null)
+                throw new IllegalArgumentException("El ID de la iglesia es nulo al convertir a DTO");
+            else
+                 iglesiaDTO.setIdIglesia(id);
 
-        List<Persona> miembros = iglesia.getMiembros();
-        List<Recurso> recursos = iglesia.getRecursos();
+            var nombre = iglesia.getNombreIglesia() != null ? iglesia.getNombreIglesia() : null;
+            if(nombre==null)
+                System.out.println("El nombre de la iglesia es nulo al convertir a DTO, se asignará un valor por defecto");
+            else
+                iglesiaDTO.setNombreIglesia(nombre);
 
-        iglesiaDTO.setMiembros(
-                miembros.stream()
-                        .map(persona -> miembroService.convertToDTO(persona))
-                        .toList()
-        );
 
-        iglesiaDTO.setRecursosEconomicos(
-                recursos.stream()
-                        .map(recurso -> recursoEconomicoService.convertToDTO((RecursoEconomico) recurso))
-                        .toList()
-        );
+            if(Objects.isNull(iglesia.getNumeroIglesiaZona()))
+                System.out.println("El número de la iglesia es nulo al convertir a DTO, se asignará un valor por defecto");
+            else
+                iglesiaDTO.setNumeroIglesia(iglesia.getNumeroIglesiaZona());
 
-        return iglesiaDTO;
+            var telefono = iglesia.getTelefonoContacto() != null ? iglesia.getTelefonoContacto() : null;
+            if(telefono!=null)
+                iglesiaDTO.setTelefonoIglesia(telefono);
+            else
+                iglesiaDTO.setPastorIglesia(miembroService.convertToDTO(iglesia.getPastor()));
+
+            iglesiaDTO.setDireccion(direccionService.converToDTO(iglesia.getDireccion()));
+
+            iglesiaDTO.setZonaAbministrativa(zonaAdministrativaServices.convertToDto(iglesia.getZonaAdministrativa()));
+
+            List<Persona> miembros = iglesia.getMiembros();
+            List<Recurso> recursos = iglesia.getRecursos();
+
+            iglesiaDTO.setMiembros(
+                    miembros.stream()
+                            .map(persona -> miembroService.convertToDTO(persona))
+                            .toList()
+            );
+
+            iglesiaDTO.setRecursosEconomicos(
+                    recursos.stream()
+                            .map(recurso -> recursoEconomicoService.convertToDTO((RecursoEconomico) recurso))
+                            .toList()
+            );
+
+            return iglesiaDTO;
+        }else{
+            throw new IllegalArgumentException("¡¡¡ E R R O R !!! \n No se pudo convertir a DTO, la instancia de iglesia es nula");
+        }
 
     }
 }
