@@ -1,17 +1,14 @@
 package com.proyectoBase.gestionEcclesia.services;
 
-import com.proyectoBase.gestionEcclesia.DTOS.AsistenciaEventoDto;
 import com.proyectoBase.gestionEcclesia.DTOS.MiembroDTO;
 import com.proyectoBase.gestionEcclesia.modele.*;
 import com.proyectoBase.gestionEcclesia.repositories.MiembroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +17,6 @@ public class MiembroService {
     private final MiembroRepository miembroRepository;
     private final RolService rolService;
     private final DireccionService direccionService;
-    private final EventoService eventoService;
 
     public List<Persona> findAll() {
         return miembroRepository.findAll();
@@ -146,61 +142,61 @@ public class MiembroService {
             if(id==null)
                 throw new IllegalArgumentException("El ID del miembro es nulo al convertir a DTO");
             else
-                dto.setId(persona.getNumeroIdentificacion());
+                dto.setId(id);
 
             var primerNombre = persona.getPrimerNombre() != null ? persona.getPrimerNombre() : null;
             if(primerNombre==null)
                 throw new IllegalArgumentException("El primer nombre del miembro es nulo al convertir a DTO, no se puede convertir un miembro sin primer nombre a DTO");
             else
-                dto.setNombre(persona.getPrimerNombre());
+                dto.setNombre(primerNombre);
 
             var segundoNombre = persona.getSegundoNombre() != null ? persona.getSegundoNombre() : null;
             if(segundoNombre==null)
                 System.out.println("¡¡¡ W A R N I N G !!! \n El segundo nombre del miembro es nulo al convertir a DTO");
             else
-                dto.setNombre2(persona.getSegundoNombre());
+                dto.setNombre2(segundoNombre);
 
             var primerApellido = persona.getPrimerApellido() != null ? persona.getPrimerApellido() : null;
             if(primerApellido==null)
                 throw new IllegalArgumentException("¡¡¡ W A R N I N G !!! \n El primer apellido del miembro es nulo al convertir a DTO, no se puede convertir un miembro sin primer apellido a DTO");
             else
-                dto.setApellido(persona.getPrimerApellido());
+                dto.setApellido(primerApellido);
 
             var segundoApellido = persona.getSegundoApellido() != null ? persona.getSegundoApellido() : null;
             if(segundoApellido==null)
                 System.out.println("¡¡¡ W A R N I N G !!! \n El segundo apellido del miembro es nulo al convertir a DTO");
             else
-                dto.setApellido2(persona.getSegundoApellido());
+                dto.setApellido2(segundoApellido);
 
             var fechaNacimiento = persona.getFechaNacimiento() != null ? persona.getFechaNacimiento() : null;
             if(fechaNacimiento==null)
                 System.out.println("¡¡¡ W A R N I N G !!! \n La fecha de nacimiento del miembro es nula al convertir a DTO");
             else
-                dto.setFechaNacimiento(persona.getFechaNacimiento());
+                dto.setFechaNacimiento(fechaNacimiento);
 
             var estadoCivil = persona.getEstadoCivil() != null ? persona.getEstadoCivil().name() : null;
             if(estadoCivil==null)
                 System.out.println("¡¡¡ W A R N I N G !!! \n El estado civil del miembro es nulo al convertir a DTO");
             else
-                dto.setEstadoCivil(persona.getEstadoCivil().name());
+                dto.setEstadoCivil(estadoCivil);
 
             var correo = persona.getCorreo() != null ? persona.getCorreo() : null;
             if(correo==null)
                 System.out.println("El correo del miembro es nulo al convertir a DTO");
             else
-                dto.setCorreo(persona.getCorreo());
+                dto.setCorreo(correo);
 
             var telefono = persona.getTelefono()!=null && !persona.getTelefono().isBlank()? persona.getTelefono() :null;
             if(telefono==null)
                 System.out.println("¡¡¡ W A R N I N G !!! \n El teléfono del miembro es nulo o está en blanco al convertir a DTO");
             else
-                dto.setTelefono(persona.getTelefono());
+                dto.setTelefono(telefono);
 
             var sexo = persona.getSexo() != null ? persona.getSexo().name() : null;
             if(sexo==null)
                throw new IllegalArgumentException("El sexo del miembro es nulo al convertir a DTO, no se puede convertir un miembro sin sexo a DTO");
             else
-                dto.setSexo(persona.getSexo().name());
+                dto.setSexo(sexo);
 
             // Convertir dirección
             if (persona.getDireccion() != null) {

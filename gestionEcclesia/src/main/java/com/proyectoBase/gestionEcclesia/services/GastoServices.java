@@ -26,14 +26,14 @@ public class GastoServices {
 
     public Gasto saveGasto(GastoDTO gastoDTO){
         Gasto gasto = new Gasto();
-        gasto = updateGastoFromDto(gasto,gastoDTO);
+        updateGastoFromDto(gasto,gastoDTO);
 
         return gastoRepository.save(gasto);
     }
 
     public Gasto updateGasto(Long id, GastoDTO gastoDTO){
         Gasto gasto = findById(id);
-        gasto = updateGastoFromDto(gasto,gastoDTO);
+        updateGastoFromDto(gasto,gastoDTO);
 
         return gasto;
     }

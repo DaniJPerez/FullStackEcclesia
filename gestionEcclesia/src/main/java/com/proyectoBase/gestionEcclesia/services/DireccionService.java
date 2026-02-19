@@ -31,7 +31,7 @@ public class DireccionService {
     @Transactional
     public Direccion save(DireccionDTO direccionDTO){
         Direccion direccion = new Direccion();
-        direccion = updateDireccionFromDTO(direccion,direccionDTO);
+        updateDireccionFromDTO(direccion,direccionDTO);
         return direccionRepository.save(direccion);
     }
 
@@ -50,67 +50,78 @@ public class DireccionService {
 
     @Transactional
     public Direccion updateDireccionFromDTO(Direccion direccion, DireccionDTO direccionDTO){
+        if(direccion!=null && direccionDTO!=null) {
 
-        var id = (direccionDTO != null && direccionDTO.getIdDireccion() != null)
-                ? direccionDTO.getIdDireccion()
-                : (direccion != null ? direccion.getId() : null);
+            var id = direccionDTO.getIdDireccion() != null
+                    ? direccionDTO.getIdDireccion()
+                    : (direccion.getId() != null ? direccion.getId() : null);
 
-        if(id==null)
-            System.out.println("El ID de la dirección es nulo al actualizar, se asignará uno nuevo al guardar");
-        else
-            direccion.setId(id);
+            if(id==null)
+                System.out.println("El ID de la dirección es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                direccion.setId(id);
 
-        var calle = (direccionDTO != null && direccionDTO.getCalle() != null)
-                ? direccionDTO.getCalle() :
-                (direccion!=null && direccion.getCalle()!=null && !direccion.getCalle().isEmpty())
-                ? direccion.getCalle() : null;
+            var calle = direccionDTO.getCalle() != null
+                    ? direccionDTO.getCalle() :
+                    (direccion.getCalle()!=null && !direccion.getCalle().isBlank())
+                    ? direccion.getCalle() : null;
 
-        if(calle==null)
-            throw new IllegalArgumentException("La calle de la dirección no puede ser nula al actualizar");
-        else
-            direccion.setCalle(calle);
+            if(calle==null)
+                throw new IllegalArgumentException("La calle de la dirección no puede ser nula al actualizar");
+            else
+                direccion.setCalle(calle);
 
-        var numero = (direccionDTO != null && direccionDTO.getNumero() != null&& !direccionDTO.getNumero().isEmpty())
-                ? direccionDTO.getNumero() :
-                (direccion!=null && direccion.getNumero()!=null && !direccion.getNumero().isEmpty())
-                ? direccion.getNumero() : null;
+            var numero = direccionDTO.getNumero() != null&& !direccionDTO.getNumero().isBlank()
+                    ? direccionDTO.getNumero() :
+                    (direccion.getNumero()!=null && !direccion.getNumero().isEmpty())
+                    ? direccion.getNumero() : null;
+            if(numero==null)
+                throw new IllegalArgumentException("El número de la dirección no puede ser nulo al actualizar");
+            else
+                direccion.setNumero(numero);
 
+            if(direccion.getBarrio()!=null && direccionDTO.getBarrioDTO()!=null)
+                direccion.setBarrio(barrioService.updateBarrioFromDTO(direccion.getBarrio(),direccionDTO.getBarrioDTO()));
 
-        direccion.setBarrio(barrioService.updateBarrioFromDTO(direccion.getBarrio(),direccionDTO.getBarrioDTO()));
+            return direccion;
 
-
-        return direccion;
+        }else
+            throw new IllegalArgumentException("La dirección o el DTO proporcionado es nulo, no se puede actualizar la dirección");
     }
 
     @Transactional
     public DireccionDTO converToDTO(Direccion direccion){
+        if(direccion!=null){
 
-        DireccionDTO direccionDTO = new DireccionDTO();
+            DireccionDTO direccionDTO = new DireccionDTO();
 
-        var id = direccion != null && direccion.getId() != null ? direccion.getId() : null;
-        if(id==null)
-            throw new IllegalArgumentException("El ID de la dirección es nulo al convertir a DTO");
-        else
-            direccionDTO.setIdDireccion(direccion.getId());
-
-
-        var numero = direccion!=null &&direccion.getNumero() != null && !direccion.getNumero().isEmpty() ? direccion.getNumero() : null;
-        if(numero==null)
-            throw new IllegalArgumentException("El número de la dirección no puede ser nulo al convertir a DTO");
-        else
-            direccionDTO.setNumero(numero);
+            var id = direccion.getId() != null ? direccion.getId() : null;
+            if(id==null)
+                throw new IllegalArgumentException("El ID de la dirección es nulo al convertir a DTO");
+            else
+                direccionDTO.setIdDireccion(direccion.getId());
 
 
-        var calle = direccion != null && direccion.getCalle() != null ? direccion.getCalle() : null;
-        if(calle==null)
-            throw new IllegalArgumentException("La calle de la dirección no puede ser nula al convertir a DTO");
-        else
-            direccionDTO.setCalle(calle);
+            var numero = direccion.getNumero() != null && !direccion.getNumero().isBlank() ? direccion.getNumero() : null;
+            if(numero==null)
+                throw new IllegalArgumentException("El número de la dirección no puede ser nulo al convertir a DTO");
+            else
+                direccionDTO.setNumero(numero);
 
 
-        direccionDTO.setBarrioDTO(barrioService.convertToDTO(direccion.getBarrio()));
+            var calle = direccion.getCalle() != null && !direccion.getCalle().isBlank() ? direccion.getCalle() : null;
+            if(calle==null)
+                throw new IllegalArgumentException("La calle de la dirección no puede ser nula al convertir a DTO");
+            else
+                direccionDTO.setCalle(calle);
 
-        return direccionDTO;
+
+            direccionDTO.setBarrioDTO(barrioService.convertToDTO(direccion.getBarrio()));
+
+            return direccionDTO;
+
+        }else
+            throw new IllegalArgumentException("La dirección proporcionada es nula, no se puede convertir a DTO");
     }
 
 }

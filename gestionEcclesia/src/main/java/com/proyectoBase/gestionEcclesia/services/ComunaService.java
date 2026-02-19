@@ -1,6 +1,5 @@
 package com.proyectoBase.gestionEcclesia.services;
 
-import jakarta.persistence.Convert;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.proyectoBase.gestionEcclesia.DTOS.ComunaDTO;
 import com.proyectoBase.gestionEcclesia.modele.Comuna;
 import com.proyectoBase.gestionEcclesia.repositories.ComunaRepository;
-import com.proyectoBase.gestionEcclesia.repositories.CiudadRepository;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class ComunaService {
     @Transactional
     public Comuna update(Long id, ComunaDTO comunaDTO){
         Comuna comuna = findById(id);
-        comuna= updateComunaFromDTO(comuna, comunaDTO);
+        updateComunaFromDTO(comuna, comunaDTO);
         return comuna;
     }
 
@@ -52,63 +50,74 @@ public class ComunaService {
 
      public Comuna updateComunaFromDTO(Comuna comuna, ComunaDTO comunaDTO){
 
-        var id = (comunaDTO!=null && comunaDTO.getIdComuna() != null)
-                ? comunaDTO.getIdComuna()
-                : (comuna != null ? comuna.getId() : null);
-        if(id==null)
-            System.out.println("No hay una Id Expesificada se estara creando una nueva instancia de comuna");
-        else
-            comuna.setId(id);
+        if(comuna!=null && comunaDTO!=null){
 
-        var nombre = (comunaDTO!=null && comunaDTO.getNombreComuna() != null)
-                ? comunaDTO.getNombreComuna()
-                : (comuna != null ? comuna.getNombre() : null);
-        if(nombre==null)
-            System.out.println("No hay un nombre Expesificado");
-        else
-            comuna.setNombre(nombre);
+            var id = comunaDTO.getIdComuna() != null
+                    ? comunaDTO.getIdComuna()
+                    : (comuna.getId() != null ? comuna.getId() : null);
+            if(id==null)
+                System.out.println("No hay una Id Expesificada se estara creando una nueva instancia de comuna");
+            else
+                comuna.setId(id);
 
-        var descripcion = (comunaDTO!=null && comunaDTO.getDescripcionComuna() != null)
-                ? comunaDTO.getDescripcionComuna()
-                : (comuna != null ? comuna.getDescripcion() : null);
-        if (descripcion==null)
-            System.out.println("No hay una descripcion Expesificada");
-        else
-            comuna.setDescripcion(descripcion);
+            var nombre = comunaDTO.getNombreComuna() != null
+                    ? comunaDTO.getNombreComuna()
+                    : (comuna.getNombre() != null ? comuna.getNombre() : null);
+            if(nombre==null)
+                System.out.println("No hay un nombre Expesificado");
+            else
+                comuna.setNombre(nombre);
 
-        comuna.setCiudad(ciudadService.updateCiudadFromDTO(comuna.getCiudad(),comunaDTO.getCiudadDTO()));
+            var descripcion = comunaDTO.getDescripcionComuna() != null
+                    ? comunaDTO.getDescripcionComuna()
+                    : (comuna.getDescripcion() != null ? comuna.getDescripcion() : null);
+            if (descripcion==null)
+                System.out.println("No hay una descripcion Expesificada");
+            else
+                comuna.setDescripcion(descripcion);
 
-        return comuna;
+            if(comuna.getCiudad()!=null && comunaDTO.getCiudadDTO()!=null)
+                comuna.setCiudad(ciudadService.updateCiudadFromDTO(comuna.getCiudad(),comunaDTO.getCiudadDTO()));
+
+            return comuna;
+
+        }else
+            throw new IllegalArgumentException("El objeto comuna o comunaDTO es nulo al actualizar");
     }
 
     public ComunaDTO convertToDTO(Comuna comuna){
-        ComunaDTO comunaDTO= new ComunaDTO();
+        if(comuna!=null){
 
-        var id = comuna.getId()!=null? comuna.getId():null;
-        if(id==null)
-            throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de comunaDTO");
-        else
-            comunaDTO.setIdComuna(id);
+            ComunaDTO comunaDTO= new ComunaDTO();
 
-
-        var nombre = comuna.getNombre() != null ? comuna.getNombre() : null;
-        if(nombre==null)
-            throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un nombre Expesificado en instancia de comunaDTO");
-        else
-            comunaDTO.setNombreComuna(nombre);
+            var id = comuna.getId()!=null? comuna.getId():null;
+            if(id==null)
+                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de comunaDTO");
+            else
+                comunaDTO.setIdComuna(id);
 
 
-        var descripcion = comuna.getDescripcion() != null ? comuna.getDescripcion() : null;
-        if(descripcion!=null)
-            System.out.println("¡¡¡ P R E C A U C I O N !!! \n : No hay una descripcion Expesificada en instancia de comunaDTO");
-        else
-            comunaDTO.setDescripcionComuna(descripcion);
+            var nombre = comuna.getNombre() != null ? comuna.getNombre() : null;
+            if(nombre==null)
+                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un nombre Expesificado en instancia de comunaDTO");
+            else
+                comunaDTO.setNombreComuna(nombre);
 
-        var ciudadDTO = ciudadService.convertToDTO(comuna.getCiudad());
 
-        comunaDTO.setCiudadDTO(ciudadDTO);
+            var descripcion = comuna.getDescripcion() != null && !comuna.getDescripcion().isBlank() ? comuna.getDescripcion() : null;
+            if(descripcion==null)
+                System.out.println("¡¡¡ P R E C A U C I O N !!! \n : No hay una descripcion Expesificada en instancia de comunaDTO");
+            else
+                comunaDTO.setDescripcionComuna(descripcion);
 
-        return comunaDTO;
+            var ciudadDTO = ciudadService.convertToDTO(comuna.getCiudad());
+
+            comunaDTO.setCiudadDTO(ciudadDTO);
+
+            return comunaDTO;
+
+        }else
+            throw new IllegalArgumentException("El objeto comuna es nulo al convertir a DTO");
     }
 
 }

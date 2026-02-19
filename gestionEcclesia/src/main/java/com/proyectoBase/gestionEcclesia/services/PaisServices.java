@@ -50,7 +50,7 @@ public class PaisServices {
             if(id==null)
                 System.out.println("El ID del pais es nulo al actualizar, se asignará uno nuevo al guardar");
             else
-                pais.setId(paisDto.getIdPais());
+                pais.setId(id);
 
             var nombre = (paisDto.getNombrePais() != null)
                     ? paisDto.getNombrePais()
@@ -58,7 +58,7 @@ public class PaisServices {
             if (nombre==null)
                 System.out.println("El nombre del pais es nulo al actualizar, se asignará uno nuevo al guardar");
             else
-                pais.setNombrePais(paisDto.getNombrePais());
+                pais.setNombrePais(nombre);
 
 
             var descripcion = (paisDto.getDescripcion() != null)
@@ -67,7 +67,7 @@ public class PaisServices {
             if (descripcion==null)
                 System.out.println("La descripción del pais es nula al actualizar");
             else
-                pais.setDescripcion(paisDto.getDescripcion());
+                pais.setDescripcion(descripcion);
 
             return pais;
         }else
@@ -82,21 +82,21 @@ public class PaisServices {
             if(id==null)
                 throw new IllegalArgumentException("El ID del pais es nulo al convertir a DTO, HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO");
             else
-                 paisDto.setIdPais(pais.getId());
+                 paisDto.setIdPais(id);
 
 
             var nombre = pais.getNombrePais() != null ? pais.getNombrePais() : null;
             if(nombre==null)
                 throw new IllegalArgumentException("El nombre del pais es nulo al convertir a DTO, HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO");
             else
-                paisDto.setNombrePais(pais.getNombrePais());
+                paisDto.setNombrePais(nombre);
 
 
             var descripcion = pais.getDescripcion() != null ? pais.getDescripcion() : null;
             if(descripcion==null)
                 System.out.println("La descripción del pais es nula al convertir a DTO, No se asignará una descripción vacía al guardar");
             else
-                paisDto.setDescripcion(pais.getDescripcion());
+                paisDto.setDescripcion(descripcion);
 
             return paisDto;
         }else

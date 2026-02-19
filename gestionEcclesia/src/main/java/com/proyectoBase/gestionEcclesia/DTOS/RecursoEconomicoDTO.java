@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +25,11 @@ public class RecursoEconomicoDTO {
     @NotNull(message = "El monto es obligatorio")
     @Positive(message = "El monto debe ser positivo")
     private BigDecimal monto;
-    
+
+    private MiembroDTO miembroDonante;
+
     private String observaciones;
+
+    private UsuarioDto usuarioCreador;
+
 }

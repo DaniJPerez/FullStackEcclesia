@@ -13,7 +13,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class IglesiaServices {
     private final IglesiaRepository iglesiaRepository;
-    private final EntidadTerritorialServices entidadTerritorialServices;
     private final DireccionService direccionService;
     private final MiembroService miembroService;
     private final RecursoEconomicoService recursoEconomicoService;
@@ -32,14 +31,14 @@ public class IglesiaServices {
     public Iglesia saveIglesia(IglesiaDTO iglesiaDTO){
 
         Iglesia iglesia = new Iglesia();
-        iglesia = updateIglesiaFromDTO(iglesia, iglesiaDTO);
+        updateIglesiaFromDTO(iglesia, iglesiaDTO);
 
         return iglesiaRepository.save(iglesia);
     }
 
     public Iglesia updateIglesia(Long id, IglesiaDTO iglesiaDTO){
         Iglesia iglesia = findById(id);
-        iglesia = updateIglesiaFromDTO(iglesia, iglesiaDTO);
+        updateIglesiaFromDTO(iglesia, iglesiaDTO);
 
         return iglesia;
     }
@@ -51,9 +50,9 @@ public class IglesiaServices {
 
     public Iglesia updateIglesiaFromDTO(Iglesia iglesia, IglesiaDTO iglesiaDTO){
 
-        if(iglesiaDTO.getIdIglesia() != null && iglesia!= null){
+        if(iglesiaDTO != null && iglesia!= null){
 
-            var id= (iglesiaDTO.getIdIglesia() != null)
+            var id= iglesiaDTO.getIdIglesia() != null
                     ? iglesiaDTO.getIdIglesia()
                     : iglesia.getIdIglesia();
             if(id==null)

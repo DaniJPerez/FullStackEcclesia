@@ -4,7 +4,6 @@ import com.proyectoBase.gestionEcclesia.DTOS.RolDTO;
 import com.proyectoBase.gestionEcclesia.modele.Rol;
 import com.proyectoBase.gestionEcclesia.repositories.RolRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,7 @@ public class RolService {
     @Transactional
     public Rol update(Long id, RolDTO rolDTO) {
         Rol rol = findById(id);
-        rol = convertUpdateFromDto(rol, rolDTO);
+        convertUpdateFromDto(rol, rolDTO);
         return rol;
     }
 
@@ -47,18 +46,69 @@ public class RolService {
         rolRepository.delete(rol);
     }
 
-    public RolDTO convertToDTO(Rol rol) {
-        RolDTO rolDTO= new RolDTO();
-        rolDTO.setId(rol.getIdRol());
-        rolDTO.setDescripcionRol(rol.getDescripcionRol());
-        rolDTO.setNombreRol(rol.getNombreRol());
-        return rolDTO;
-    }
 
     public Rol convertUpdateFromDto(Rol rol,RolDTO rolDTO) {
-        rol.setIdRol(rolDTO.getId());
-        rol.setDescripcionRol(rolDTO.getDescripcionRol());
-        rol.setNombreRol(rolDTO.getNombreRol());
-        return rol;
+        if(rol!=null && rolDTO!=null){
+            var id = (rolDTO.getId() != null)
+                    ? rolDTO.getId()
+                    : (rol.getIdRol() != null ? rol.getIdRol() : null);
+            if (id == null)
+                System.out.println("El ID del rol es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                rol.setIdRol(rolDTO.getId());
+
+            var descripcion = (rolDTO.getDescripcionRol() != null && !rolDTO.getDescripcionRol().isBlank())
+                    ? rolDTO.getDescripcionRol()
+                    : (rol.getDescripcionRol() != null ? rol.getDescripcionRol() : null);
+            if (descripcion == null)
+                System.out.println("La descripción del rol es nula al actualizar, se asignará una nueva al guardar");
+            else
+                rol.setDescripcionRol(rolDTO.getDescripcionRol());
+
+            var nombre = (rolDTO.getNombreRol() != null && !rolDTO.getNombreRol().isBlank())
+                    ? rolDTO.getNombreRol()
+                    : (rol.getNombreRol() != null ? rol.getNombreRol() : null);
+            if (nombre == null)
+                System.out.println("El nombre del rol es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                rol.setNombreRol(rolDTO.getNombreRol());
+
+            return rol;
+
+        }else
+            throw new IllegalArgumentException("El rol o el DTO proporcionado es nulo, no se puede actualizar el rol");
+    }
+
+    public RolDTO convertToDTO(Rol rol) {
+        if(rol!=null){
+            RolDTO rolDTO= new RolDTO();
+            var id = (rolDTO.getId() != null)
+                    ? rolDTO.getId()
+                    : (rol.getIdRol() != null ? rol.getIdRol() : null);
+            if (id == null)
+                System.out.println("El ID del rol es nulo al convertir a DTO, se asignará uno nuevo al guardar");
+            else
+                rolDTO.setId(rol.getIdRol());
+
+            var descripcion = (rolDTO.getDescripcionRol() != null && !rolDTO.getDescripcionRol().isBlank())
+                    ? rolDTO.getDescripcionRol()
+                    : (rol.getDescripcionRol() != null ? rol.getDescripcionRol() : null);
+            if (descripcion == null)
+                System.out.println("La descripción del rol es nula al convertir a DTO, se asignará una nueva al guardar");
+            else
+                rolDTO.setDescripcionRol(rol.getDescripcionRol());
+
+            var nombre = (rolDTO.getNombreRol() != null && !rolDTO.getNombreRol().isBlank())
+                    ? rolDTO.getNombreRol()
+                    : (rol.getNombreRol() != null ? rol.getNombreRol() : null);
+            if (nombre == null)
+                System.out.println("El nombre del rol es nulo al convertir a DTO, se asignará uno nuevo al guardar");
+            else
+                rolDTO.setNombreRol(rol.getNombreRol());
+
+            return rolDTO;
+        }else
+            throw new IllegalArgumentException("El rol proporcionado es nulo, no se puede convertir a DTO");
+
     }
 }

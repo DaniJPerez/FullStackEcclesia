@@ -32,15 +32,6 @@ public class AsistenciaEventoService {
                 .orElseThrow(() -> new EntityNotFoundException("Asistencia no encontrada con id " + id));
     }
 
-    public List<AsistenciaEvento> getAsistenciasByMiembroId(Long miembroId) {
-        try{
-
-        }catch (IllegalArgumentException ex){
-            throw new EntityNotFoundException("Miembro no encontrado con id " + miembroId + ex.getMessage());
-        }
-        return asistenciaEventoRepository.findByPersona_NumeroIdentificacion(miembroId);
-    }
-
     public List<AsistenciaEvento> getAsistenciasByEventoId(Long eventoId) {
         return asistenciaEventoRepository.findByEvento_Id(eventoId);
     }
@@ -145,22 +136,24 @@ public class AsistenciaEventoService {
     }
 
     public AsistenciaEvento updateAsistenciaEventoFromDto(AsistenciaEvento asistenciaEvento,AsistenciaEventoDto asistenciaEventoDto) {
-        if(asistenciaEvento==null || asistenciaEventoDto==null)
-            System.out.println("El objeto asistenciaEvento o asistenciaEventoDto es nulo al actualizar, se asignará uno nuevo al guardar");
-        else
+
+        if(asistenciaEvento!=null && asistenciaEventoDto!=null){
+
             asistenciaEvento.setIdAsistenciaEvento(asistenciaEventoDto.getIdAsistencia());
 
-        asistenciaEventoManagerService
-                        .convertirAEntidad(asistenciaEventoDto);
+            asistenciaEventoManagerService
+                            .convertirAEntidad(asistenciaEventoDto);
 
-        if(asistenciaEvento.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia().toString().isEmpty()){
-            System.out.println("La fecha de asistencia es nula al actualizar, se asignará una nueva fecha al guardar");
-            asistenciaEvento.setFechaAsistencia(LocalDate.now());
-        }
-        else
-            asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
+            if(asistenciaEvento.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia()==null || asistenciaEventoDto.getFechaAsistencia().toString().isEmpty()){
+                System.out.println("La fecha de asistencia es nula al actualizar, se asignará una nueva fecha al guardar");
+                asistenciaEvento.setFechaAsistencia(LocalDate.now());
+            }
+            else
+                asistenciaEvento.setFechaAsistencia(asistenciaEventoDto.getFechaAsistencia());
 
-        return asistenciaEvento;
+            return asistenciaEvento;
+        }else
+            throw new IllegalArgumentException("La asistenciaEvento o el DTO de la asistenciaEvento no pueden ser nulos al actualizar");
     }
 
 
@@ -251,7 +244,6 @@ public class AsistenciaEventoService {
         return eventoDTO;
 
     }
-
 
     public boolean comprobarAsistenciaEvento(Persona miembro, Evento evento){
         AsistenciaEvento comprovarAsistencia = asistenciaEventoRepository.findByPersonaAndEvento(miembro, evento);

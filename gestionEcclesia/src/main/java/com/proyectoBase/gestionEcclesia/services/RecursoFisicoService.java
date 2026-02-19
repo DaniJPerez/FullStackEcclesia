@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -50,19 +51,82 @@ public class RecursoFisicoService {
         recursoFisicoRepository.delete(recursoFisico);
     }
 
-    private void updateRecursoFisicoFromDTO(RecursoFisico recursoFisico, RecursoFisicoDTO recursoFisicoDTO) {
-        recursoFisico.setDescripcionRecurso(recursoFisicoDTO.getDescripcion());
-        recursoFisico.setCantidad(recursoFisicoDTO.getCantidad());
-        recursoFisico.setCosto(recursoFisicoDTO.getValorUnitarioEstimado());
-        recursoFisico.setDescripcionRecurso(recursoFisicoDTO.getObservaciones());
+    private RecursoFisico updateRecursoFisicoFromDTO(RecursoFisico recursoFisico, RecursoFisicoDTO recursoFisicoDTO) {
+
+        if(recursoFisico!=null && recursoFisicoDTO!=null){
+
+            var id = (recursoFisicoDTO.getId() != null)
+                        ? recursoFisicoDTO.getId()
+                        : (recursoFisico.getIdRecurso() != null ? recursoFisico.getIdRecurso() : null);
+            if (id == null)
+                System.out.println("El ID del recurso físico es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                recursoFisico.setIdRecurso(id);
+
+            var descripcion = (recursoFisicoDTO.getDescripcion() != null && !recursoFisicoDTO.getDescripcion().isBlank())
+                        ? recursoFisicoDTO.getDescripcion()
+                        : recursoFisico.getDescripcionRecurso();
+            if (descripcion == null)
+                System.out.println("La descripción del recurso físico es nula al actualizar, se asignará una nueva al guardar");
+            else
+                recursoFisico.setDescripcionRecurso(descripcion);
+
+            var cantidad = (recursoFisicoDTO.getCantidad() != null)
+                        ? recursoFisicoDTO.getCantidad()
+                        : recursoFisico.getCantidad();
+            if (Objects.isNull(cantidad))
+                System.out.println("La cantidad del recurso físico es nula al actualizar, se asignará una nueva al guardar");
+            else
+                recursoFisico.setCantidad(cantidad);
+
+            var consto = (recursoFisicoDTO.getValorUnitarioEstimado() != null)
+                        ? recursoFisicoDTO.getValorUnitarioEstimado()
+                        : recursoFisico.getCosto();
+            if (consto == null)
+                System.out.println("El costo del recurso físico es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                recursoFisico.setCosto(recursoFisicoDTO.getValorUnitarioEstimado());
+            return recursoFisico;
+        }else
+            throw new IllegalArgumentException("El recurso físico o el DTO proporcionado para actualizar son nulos");
     }
 
     public RecursoFisicoDTO convertToDTO(RecursoFisico recursoFisico) {
-        RecursoFisicoDTO recursoFisicoDTO = new RecursoFisicoDTO();
-        recursoFisicoDTO.setId(recursoFisicoDTO.getId());
-        recursoFisicoDTO.setCantidad(recursoFisico.getCantidad());
-        recursoFisicoDTO.setDescripcion(recursoFisico.getDescripcionRecurso());
-        recursoFisicoDTO.setDireccionDTO(direccionService.converToDTO(recursoFisico.getDireccion()));
-        return recursoFisicoDTO;
+        if(recursoFisico!=null){
+            RecursoFisicoDTO recursoFisicoDTO = new RecursoFisicoDTO();
+
+            var id = recursoFisico.getIdRecurso() != null ? recursoFisico.getIdRecurso() : null;
+            if(id==null)
+                throw new IllegalArgumentException("El ID del recurso físico es nulo al convertir a DTO HUBO UN ERROR AL CONVERTIR LA ENTIDAD A DTO");
+            else
+                recursoFisicoDTO.setId(recursoFisicoDTO.getId());
+
+            var cantidad = Objects.nonNull(recursoFisico.getCantidad()) ? recursoFisico.getCantidad() : null;
+            if(cantidad==null)
+                System.out.println("La cantidad del recurso físico es nula al convertir a DTO, se asignará una nueva al guardar");
+            else
+                recursoFisicoDTO.setCantidad(recursoFisico.getCantidad());
+
+            var descripcion = recursoFisico.getDescripcionRecurso() != null ? recursoFisico.getDescripcionRecurso() : null;
+            if(descripcion==null)
+                System.out.println("La descripción del recurso físico es nula al convertir a DTO, se asignará una nueva al guardar");
+            else
+                recursoFisicoDTO.setDescripcion(recursoFisico.getDescripcionRecurso());
+
+            var costo = recursoFisico.getCosto() != null ? recursoFisico.getCosto() : null;
+            if(costo==null)
+                System.out.println("El costo del recurso físico es nulo al convertir a DTO, se asignará uno nuevo al guardar");
+            else
+                recursoFisicoDTO.setValorUnitarioEstimado(recursoFisico.getCosto());
+
+            if(recursoFisico.getDireccion()!=null)
+                recursoFisicoDTO.setDireccionDTO(direccionService.converToDTO(recursoFisico.getDireccion()));
+            else
+                System.out.println("!!! P R E C A U C I O N ¡¡¡¡ El recurso físico no tiene una dirección asociada al convertir a DTO");
+
+            return recursoFisicoDTO;
+
+        }else
+            throw new IllegalArgumentException("El recurso físico proporcionado para convertir a DTO es nulo");
     }
 }

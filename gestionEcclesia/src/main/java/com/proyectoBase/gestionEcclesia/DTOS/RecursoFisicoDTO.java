@@ -26,8 +26,12 @@ public class RecursoFisicoDTO {
     @NotNull(message = "El valor unitario estimado es obligatorio")
     @Positive(message = "El valor unitario estimado debe ser positivo")
     private BigDecimal valorUnitarioEstimado;
+
+    private MiembroDTO miembroDonante;
     
     private String observaciones;
 
     private DireccionDTO direccionDTO;
+
+    private UsuarioDto usuarioCreador;
 }

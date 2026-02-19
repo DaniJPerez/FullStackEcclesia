@@ -47,10 +47,27 @@ public class TipoEventoServices {
     }
 
     public TipoEvento updateTipoEventoFromDto(TipoEvento tipoEvento, TipoEventoDTO tipoEventoDTO){
-        tipoEvento.setId(tipoEventoDTO.getIdTipoEvento());
-        tipoEvento.setNombre(tipoEventoDTO.getNombreTipoEvento());
+        if(tipoEvento!=null && tipoEventoDTO!=null){
 
-        return tipoEvento;
+            var id = (tipoEventoDTO.getIdTipoEvento() != null)
+                    ? tipoEventoDTO.getIdTipoEvento()
+                    : (tipoEvento.getId() != null ? tipoEvento.getId() : null);
+            if (id == null)
+                System.out.println("El ID del tipoEvento es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                tipoEvento.setId(tipoEventoDTO.getIdTipoEvento());
+
+            var nombre = (tipoEventoDTO.getNombreTipoEvento() != null)
+                    ? tipoEventoDTO.getNombreTipoEvento()
+                    : tipoEvento.getNombre();
+            if (nombre == null)
+                System.out.println("El nombre del tipoEvento es nulo al actualizar, se asignará uno nuevo al guardar");
+            else
+                tipoEvento.setNombre(tipoEventoDTO.getNombreTipoEvento());
+
+            return tipoEvento;
+        }else
+            throw new IllegalArgumentException("El objeto TipoEvento o TipoEventoDTO es nulo al actualizar");
     }
 
     public TipoEventoDTO convertToDto(TipoEvento tipoEvento){

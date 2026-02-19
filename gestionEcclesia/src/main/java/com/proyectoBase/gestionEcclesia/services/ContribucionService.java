@@ -7,7 +7,6 @@ import com.proyectoBase.gestionEcclesia.modele.Contribucion;
 import com.proyectoBase.gestionEcclesia.modele.Evento;
 import com.proyectoBase.gestionEcclesia.modele.Persona;
 import com.proyectoBase.gestionEcclesia.repositories.ContribucionRepository;
-import com.proyectoBase.gestionEcclesia.repositories.MiembroRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -74,78 +73,89 @@ public class ContribucionService {
     }
 
     @Transactional
-    private Contribucion updateContribucionFromDTO(Contribucion contribucion, ContribucionDTO contribucionDTO) {
+    public Contribucion updateContribucionFromDTO(Contribucion contribucion, ContribucionDTO contribucionDTO) {
+        if(contribucion!=null && contribucionDTO!=null){
 
-         var id = (contribucionDTO != null && contribucionDTO.getId() != null&& contribucionDTO.getId().toString().isEmpty())
-                 ? contribucionDTO.getId()
-                 : (contribucion != null ? contribucion.getId() : null);
-             if (id == null)
-                 System.out.println("No hay una Id Expesificada se estara creando una nueva instancia");
-             else
-                 contribucion.setId(id);
+             var id = contribucionDTO.getId() != null
+                     ? contribucionDTO.getId()
+                     : (contribucion.getId() != null ? contribucion.getId() : null);
+                 if (id == null)
+                     System.out.println("No hay una Id Expesificada se estara creando una nueva instancia");
+                 else
+                     contribucion.setId(id);
 
-         var fechaContribucion = (contribucionDTO != null && contribucionDTO.getFechaContribucion() != null && !contribucionDTO.getFechaContribucion().toString().isEmpty())
-                 ? contribucionDTO.getFechaContribucion()
-                 : (contribucion != null ? contribucion.getFechaContribucion() : null);
-             if(fechaContribucion==null)
-                 System.out.println("No hay una fecha de contribucion Expesificada");
-             else
-                 contribucion.setFechaContribucion(fechaContribucion);
+             var fechaContribucion = contribucionDTO.getFechaContribucion() != null && !contribucionDTO.getFechaContribucion().toString().isBlank()
+                     ? contribucionDTO.getFechaContribucion()
+                     : (contribucion.getFechaContribucion() != null ? contribucion.getFechaContribucion() : null);
+                 if(fechaContribucion==null)
+                     System.out.println("No hay una fecha de contribucion Expesificada");
+                 else
+                     contribucion.setFechaContribucion(fechaContribucion);
 
-         contribucion.setPersona(miembroService.updateMiembroFromDTO(contribucion.getPersona(), contribucionDTO.getMiembro()));
+             if(contribucion.getPersona()!=null && contribucionDTO.getMiembro()!=null)
+                contribucion.setPersona(miembroService.updateMiembroFromDTO(contribucion.getPersona(), contribucionDTO.getMiembro()));
 
-         var monto = contribucionDTO.getMonto() != null || contribucion.getMonto() != null ? contribucionDTO.getMonto() : null;
-           if(monto==null)
-               throw new IllegalArgumentException("No hay un monto Expesificado");
-           else
-               contribucion.setMonto(monto);
+             var monto = contribucionDTO.getMonto() != null || contribucion.getMonto() != null ? contribucionDTO.getMonto() : null;
+               if(monto==null)
+                   throw new IllegalArgumentException("No hay un monto Expesificado");
+               else
+                   contribucion.setMonto(monto);
 
-         var descripcion = (contribucionDTO != null && contribucionDTO.getObservaciones() != null && !contribucionDTO.getObservaciones().isEmpty())
-                           ? contribucionDTO.getObservaciones()
-                           : (contribucion != null && contribucion.getDescripcion() !=null && !contribucion.getDescripcion().isEmpty()
-                           ? contribucion.getDescripcion() : null);
-           if(descripcion==null)
-               System.out.println("No hay una descripcion Expesificada");
-           else
-               contribucion.setDescripcion(descripcion);
+             var descripcion = contribucionDTO.getObservaciones() != null && !contribucionDTO.getObservaciones().isBlank()
+                               ? contribucionDTO.getObservaciones()
+                               : (contribucion.getDescripcion() != null && !contribucion.getDescripcion().isBlank()
+                               ? contribucion.getDescripcion() : null);
+               if(descripcion==null)
+                   System.out.println("No hay una descripcion Expesificada");
+               else
+                   contribucion.setDescripcion(descripcion);
 
-         return contribucion;
+             return contribucion;
+
+        }else
+            throw new IllegalArgumentException("La contribución o el DTO proporcionado es nulo. No se puede actualizar la contribución.");
 
     }
 
     public ContribucionDTO convertToDTO(Contribucion contribucion) {
-        ContribucionDTO contribucionDTO = new ContribucionDTO();
+        if(contribucion!=null){
 
-        // Asegúrate de que estos métodos estén definidos en la clase base o usa instanceof
-        var id = contribucion.getId() != null ? contribucion.getId() : null;
-            if(id==null)
-                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de contribucion");
-            else
-                contribucionDTO.setId(id);
+            ContribucionDTO contribucionDTO = new ContribucionDTO();
 
-        var fechaContribucion = contribucion.getFechaContribucion() != null ? contribucion.getFechaContribucion() : null;
-            if(fechaContribucion==null)
-                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una fecha de contribucion Expesificada en instancia de contribucion");
-            else
-                contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
+            // Asegúrate de que estos métodos estén definidos en la clase base o usa instanceof
+            var id = contribucion.getId() != null ? contribucion.getId() : null;
+                if(id==null)
+                    throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una Id Expesificada en instancia de contribucion");
+                else
+                    contribucionDTO.setId(id);
 
-        var observaciones= contribucion.getDescripcion()!=null ? contribucion.getDescripcion(): null;
-            if(observaciones==null)
-                System.out.println("¡¡¡ P R E C A U C I O N !!! \n : No hay una descripcion Expesificada en instancia de contribucion");
-            else
-                contribucionDTO.setObservaciones(contribucion.getDescripcion());
+            var fechaContribucion = contribucion.getFechaContribucion() != null && !contribucion.getFechaContribucion().toString().isBlank()
+                                    ? contribucion.getFechaContribucion() : null;
+                if(fechaContribucion==null)
+                    throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay una fecha de contribucion Expesificada en instancia de contribucion");
+                else
+                    contribucionDTO.setFechaContribucion(contribucion.getFechaContribucion());
 
-        MiembroDTO miembroDTO = miembroService.convertToDTO(contribucion.getPersona());
-        contribucionDTO.setMiembro(miembroDTO);
+            var observaciones= contribucion.getDescripcion()!=null ? contribucion.getDescripcion(): null;
+                if(observaciones==null)
+                    System.out.println("¡¡¡ P R E C A U C I O N !!! \n : No hay una descripcion Expesificada en instancia de contribucion");
+                else
+                    contribucionDTO.setObservaciones(contribucion.getDescripcion());
 
-        var monto = contribucion.getMonto() != null ? contribucion.getMonto() : null;
-            if(monto==null)
-                throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un monto Expesificado en instancia de contribucion");
-            else
-                contribucionDTO.setMonto(contribucion.getMonto());
+            MiembroDTO miembroDTO = miembroService.convertToDTO(contribucion.getPersona());
+
+            contribucionDTO.setMiembro(miembroDTO);
+
+            var monto = contribucion.getMonto() != null ? contribucion.getMonto() : null;
+                if(monto==null)
+                    throw new IllegalArgumentException("¡¡¡ P R E C A U C I O N !!! \n : No hay un monto Expesificado en instancia de contribucion");
+                else
+                    contribucionDTO.setMonto(contribucion.getMonto());
 
 
-        return contribucionDTO;
+            return contribucionDTO;
+        }else
+            throw new IllegalArgumentException("La contribución proporcionada es nula. No se puede convertir a DTO.");
     }
 
     public MiembroDTO agregarContribucionAMiembroDto(MiembroDTO miembroDTO){
