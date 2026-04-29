@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.RecursoEconomicoDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.RecursoEconomico;
 import com.proyectoBase.gestionEcclesia.repositories.ContribucionRepository;
 import com.proyectoBase.gestionEcclesia.repositories.RecursoEconomicoRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecursoEconomicoService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final RecursoEconomicoRepository recursoEconomicoRepository;
     private final MiembroService miembroService;
 
@@ -39,6 +41,8 @@ public class RecursoEconomicoService {
     public RecursoEconomico save(RecursoEconomicoDTO recursoEconomicoDTO) {
         RecursoEconomico recursoEconomico = new RecursoEconomico();
         updateRecursoEconomicoFromDTO(recursoEconomico, recursoEconomicoDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        recursoEconomico.setUsuarioRegistro(usuario);
         return recursoEconomicoRepository.save(recursoEconomico);
     }
 

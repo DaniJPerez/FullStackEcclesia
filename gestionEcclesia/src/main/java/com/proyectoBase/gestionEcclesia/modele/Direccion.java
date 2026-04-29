@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Data
@@ -38,7 +36,7 @@ public class Direccion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_direccion_usuario_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 
 
 

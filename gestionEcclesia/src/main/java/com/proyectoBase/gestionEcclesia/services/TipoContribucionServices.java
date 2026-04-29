@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.TipoContribucionDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.TipoContribucion;
 import com.proyectoBase.gestionEcclesia.repositories.TipoContribucionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TipoContribucionServices {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final TipoContribucionRepository repository;
 
     public List<TipoContribucion> getAllTipoContribuciones() {
@@ -24,7 +27,8 @@ public class TipoContribucionServices {
     public TipoContribucion createTipoContribucion(TipoContribucionDTO tipoContribucionDTO) {
         TipoContribucion tipoContribucion = new TipoContribucion();
         updateTipoContribucionFromDto(tipoContribucion, tipoContribucionDTO);
-
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        tipoContribucion.setUsuarioRegistro(usuario);
         return repository.save(tipoContribucion);
     }
 

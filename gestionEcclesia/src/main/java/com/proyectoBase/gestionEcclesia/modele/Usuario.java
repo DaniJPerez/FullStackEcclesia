@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
@@ -52,8 +53,21 @@ public class Usuario {
     @ColumnDefault("1")
     private Boolean activo;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol_sistema", length = 20)
+    private RolSistema rolSistema;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_administrador", foreignKey = @ForeignKey(name = "fk_usuario_administrador"))
+    @Lazy
     private Usuario usuarioAdministrador;
+
+    public static RolSistema convertirRolService(String rol) {
+        try {
+            return RolSistema.valueOf(rol.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Rol no válido: " + rol);
+        }
+    }
 
 }

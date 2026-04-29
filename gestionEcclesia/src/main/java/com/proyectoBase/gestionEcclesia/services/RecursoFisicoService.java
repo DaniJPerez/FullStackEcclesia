@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.RecursoFisicoDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.RecursoFisico;
 import com.proyectoBase.gestionEcclesia.repositories.RecursoFisicoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +16,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class RecursoFisicoService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final RecursoFisicoRepository recursoFisicoRepository;
     private final DireccionService direccionService;
 
@@ -35,6 +37,8 @@ public class RecursoFisicoService {
     public RecursoFisico save(RecursoFisicoDTO recursoFisicoDTO) {
         RecursoFisico recursoFisico = new RecursoFisico();
         updateRecursoFisicoFromDTO(recursoFisico, recursoFisicoDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        recursoFisico.setUsuarioRegistro(usuario);
         return recursoFisicoRepository.save(recursoFisico);
     }
 

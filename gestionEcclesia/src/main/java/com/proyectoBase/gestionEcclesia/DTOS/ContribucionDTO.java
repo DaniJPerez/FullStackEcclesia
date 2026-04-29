@@ -29,5 +29,9 @@ public class ContribucionDTO {
     
     @NotNull(message = "El ID del miembro es obligatorio")
     private MiembroDTO miembro;
+
+    @NotNull(message = "El ID del evento es obligatorio")
+    private TipoContribucionDTO tipoContribucionDTO;
+
     private UsuarioDto usuarioCreador;
 }

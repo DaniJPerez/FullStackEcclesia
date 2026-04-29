@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.ZonaAdministrativaDto;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.ZonaAdministrativa;
 import com.proyectoBase.gestionEcclesia.repositories.ZonaAdministrativaRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ZonaAdministrativaServices {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final ZonaAdministrativaRepository repository;
     private final MiembroService miembroService;
 
@@ -32,7 +35,8 @@ public class ZonaAdministrativaServices {
     public ZonaAdministrativa updateZonaAdministrativa(Long id, ZonaAdministrativaDto zonaAdministrativaDto) {
         ZonaAdministrativa zonaAdministrativa = repository.findById(id).orElseThrow(()-> new IllegalArgumentException("Zona Abministrativa no encontrada con id: " + id));
         updateZonaAdministrativaFromDto(zonaAdministrativa, zonaAdministrativaDto);
-
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        zonaAdministrativa.setUsuarioRegistro(usuario);
         return zonaAdministrativa;
     }
 

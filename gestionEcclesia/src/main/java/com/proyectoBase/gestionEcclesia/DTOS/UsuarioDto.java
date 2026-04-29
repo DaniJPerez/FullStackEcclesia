@@ -16,6 +16,7 @@ public class UsuarioDto {
     private LocalDate fecha;
     private boolean estado;
     private String correo;
+    private String modo;
 
 
 }

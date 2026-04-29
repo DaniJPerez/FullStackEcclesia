@@ -3,6 +3,7 @@ package com.proyectoBase.gestionEcclesia.services;
 import com.proyectoBase.gestionEcclesia.DTOS.AsistenciaEventoDto;
 import com.proyectoBase.gestionEcclesia.DTOS.EventoDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.MiembroDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.AsistenciaEvento;
 import com.proyectoBase.gestionEcclesia.modele.Evento;
 import com.proyectoBase.gestionEcclesia.modele.Persona;
@@ -19,7 +20,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AsistenciaEventoService {
-
+    private final UsuarioContextUtil UsuarioContextUtil;
     private final AsistenciaEventoManagerService asistenciaEventoManagerService;
     private final AsistenciaEventoRepository asistenciaEventoRepository;
 
@@ -42,7 +43,8 @@ public class AsistenciaEventoService {
     public AsistenciaEvento save(AsistenciaEventoDto asistenciaEventoDto) {
 
         AsistenciaEvento asistenciaEvento = new AsistenciaEvento();
-        asistenciaEvento = updateAsistenciaEventoFromDto(asistenciaEvento, asistenciaEventoDto);
+
+        updateAsistenciaEventoFromDto(asistenciaEvento, asistenciaEventoDto);
 
         var asistenciaExistente = comprobarAsistenciaEvento(
                 asistenciaEvento.getPersona(),
@@ -53,7 +55,10 @@ public class AsistenciaEventoService {
             throw new IllegalArgumentException("La asistencia ya existe para este miembro y evento");
         }
 
-        asistenciaEvento = asistenciaEventoManagerService.agregarAsistenciaMiembroYEvento(asistenciaEventoDto);
+        asistenciaEventoManagerService.agregarAsistenciaMiembroYEvento(asistenciaEventoDto);
+
+        var usuarioActual = UsuarioContextUtil.getUsuarioAutenticado();
+        asistenciaEvento.setUsuarioRegistro(usuarioActual);
 
         return asistenciaEventoRepository.save(asistenciaEvento);
     }

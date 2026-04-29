@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.EntidadTerritorialDto;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.EntidadTerritorial;
 import com.proyectoBase.gestionEcclesia.repositories.EntidadTerritorialRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EntidadTerritorialServices {
+    private final UsuarioContextUtil usuarioContextUtil;
     private final EntidadTerritorialRepository entidadTerritorialRepository;
     private final PaisServices paisServices;
 
@@ -26,6 +28,9 @@ public class EntidadTerritorialServices {
         EntidadTerritorial entidadTerritorial = new EntidadTerritorial();
         updateFromDto(entidadTerritorial, entidadTerritorialDTo);
 
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+
+        entidadTerritorial.setUsuarioRegistro(usuario);
         return entidadTerritorialRepository.save(entidadTerritorial);
     }
 

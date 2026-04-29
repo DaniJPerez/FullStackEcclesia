@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.IglesiaDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.*;
 import com.proyectoBase.gestionEcclesia.repositories.IglesiaRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class IglesiaServices {
+    private final UsuarioContextUtil usuarioContextUtil;
     private final IglesiaRepository iglesiaRepository;
     private final DireccionService direccionService;
     private final MiembroService miembroService;
@@ -32,6 +34,8 @@ public class IglesiaServices {
 
         Iglesia iglesia = new Iglesia();
         updateIglesiaFromDTO(iglesia, iglesiaDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        iglesia.setUsuarioRegistro(usuario);
 
         return iglesiaRepository.save(iglesia);
     }

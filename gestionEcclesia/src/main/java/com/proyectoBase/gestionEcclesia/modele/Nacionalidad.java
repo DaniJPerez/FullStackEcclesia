@@ -33,6 +33,6 @@ public class Nacionalidad {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_nacionalidad_usuario_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 
 }

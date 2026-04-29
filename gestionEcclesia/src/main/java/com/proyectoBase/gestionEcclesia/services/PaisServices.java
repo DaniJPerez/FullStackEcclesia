@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.PaisDto;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.Pais;
 import com.proyectoBase.gestionEcclesia.repositories.PaisRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PaisServices {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final PaisRepository paisRepository;
 
     public List<Pais> getAllPaises() {
@@ -28,6 +31,8 @@ public class PaisServices {
     public Pais savePais(PaisDto pais) {
         Pais nuevoPais = new Pais();
         updatePaisFromDto(nuevoPais, pais);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        nuevoPais.setUsuarioRegistro(usuario);
         return paisRepository.save(nuevoPais);
     }
 

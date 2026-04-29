@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.RolDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.Rol;
 import com.proyectoBase.gestionEcclesia.repositories.RolRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RolService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final RolRepository rolRepository;
 
     public List<Rol> findAll() {
@@ -30,6 +32,8 @@ public class RolService {
         Rol rol = new Rol();
         rol.setDescripcionRol(rolDTO.getDescripcionRol());
         rol.setNombreRol(rolDTO.getNombreRol());
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        rol.setUsuarioRegistro(usuario);
         return rolRepository.save(rol);
     }
 

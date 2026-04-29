@@ -4,12 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -32,6 +26,6 @@ public  class TipoEvento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_tipo_evento_usuario_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 
 }

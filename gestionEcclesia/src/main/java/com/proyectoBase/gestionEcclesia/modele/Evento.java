@@ -23,7 +23,7 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "evento_seq")
     @SequenceGenerator(
             name = "evento_seq",
-            sequenceName = "SEC_ROL", // Nombre de la secuencia en la BD (Convención: SEC_NOMBRE_TABLA)
+            sequenceName = "SEC_EVENTO", // Nombre de la secuencia en la BD (Convención: SEC_NOMBRE_TABLA)
             allocationSize = 1 // Determina cuántos IDs Hibernate pide a la vez (1 es seguro)
     )
     private Long id;

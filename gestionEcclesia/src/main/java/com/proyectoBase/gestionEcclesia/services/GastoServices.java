@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.GastoDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.Gasto;
 import com.proyectoBase.gestionEcclesia.repositories.GastoRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GastoServices {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final GastoRepository gastoRepository;
 
     public List<Gasto> findAll() {
@@ -27,7 +30,8 @@ public class GastoServices {
     public Gasto saveGasto(GastoDTO gastoDTO){
         Gasto gasto = new Gasto();
         updateGastoFromDto(gasto,gastoDTO);
-
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        gasto.setUsuarioRegistro(usuario);
         return gastoRepository.save(gasto);
     }
 

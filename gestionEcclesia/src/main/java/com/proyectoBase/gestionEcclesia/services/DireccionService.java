@@ -1,5 +1,6 @@
 package com.proyectoBase.gestionEcclesia.services;
 
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.repositories.DireccionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DireccionService {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final DireccionRepository direccionRepository;
     private final BarrioService barrioService;
 
@@ -32,6 +35,8 @@ public class DireccionService {
     public Direccion save(DireccionDTO direccionDTO){
         Direccion direccion = new Direccion();
         updateDireccionFromDTO(direccion,direccionDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        direccion.setUsuarioRegistro(usuario);
         return direccionRepository.save(direccion);
     }
 

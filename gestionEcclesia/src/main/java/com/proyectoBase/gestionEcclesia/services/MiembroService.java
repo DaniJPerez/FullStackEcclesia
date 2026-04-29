@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.MiembroDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.*;
 import com.proyectoBase.gestionEcclesia.repositories.MiembroRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MiembroService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final MiembroRepository miembroRepository;
     private final RolService rolService;
     private final DireccionService direccionService;
@@ -35,6 +37,8 @@ public class MiembroService {
     public Persona save(MiembroDTO miembroDTO) {
         Persona persona = new Persona();
         updateMiembroFromDTO(persona, miembroDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        persona.setUsuarioRegistro(usuario);
         return miembroRepository.save(persona);
     }
 

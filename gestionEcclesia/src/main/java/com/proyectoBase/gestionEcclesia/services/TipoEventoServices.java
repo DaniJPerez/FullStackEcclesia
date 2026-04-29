@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.TipoEventoDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.TipoEvento;
 import com.proyectoBase.gestionEcclesia.repositories.TipoEventoRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class TipoEventoServices {
+
+    private final UsuarioContextUtil usuarioContextUtil;
     private final TipoEventoRepository repository;
 
     public List<TipoEvento> findAll() {
@@ -27,9 +30,8 @@ public class TipoEventoServices {
     public TipoEvento create(TipoEventoDTO tipoEventoDTO) {
         TipoEvento tipoEvento = new TipoEvento();
         updateTipoEventoFromDto(tipoEvento, tipoEventoDTO);
-
-        System.out.println("Verificar que verdaderamente llega el objeto tipoEvento antes de guardarlo: " + tipoEvento);
-
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        tipoEvento.setUsuarioRegistro(usuario);
         return repository.save(tipoEvento);
     }
 

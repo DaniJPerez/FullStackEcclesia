@@ -3,6 +3,7 @@ package com.proyectoBase.gestionEcclesia.services;
 import com.proyectoBase.gestionEcclesia.DTOS.ContribucionDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.EventoDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.MiembroDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.Contribucion;
 import com.proyectoBase.gestionEcclesia.modele.Evento;
 import com.proyectoBase.gestionEcclesia.modele.Persona;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContribucionService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final ContribucionRepository contribucionRepository;
     private final MiembroService miembroService;
     private final EventoService eventoService;
@@ -56,6 +58,8 @@ public class ContribucionService {
     public Contribucion save(ContribucionDTO contribucionDTO) {
         Contribucion contribucion = new Contribucion();
         updateContribucionFromDTO(contribucion, contribucionDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        contribucion.setUsuarioRegistro(usuario);
         return contribucionRepository.save(contribucion);
     }
 

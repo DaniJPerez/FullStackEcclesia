@@ -43,6 +43,6 @@ public class AsistenciaEvento {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_asistencia_usuario_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 
 }

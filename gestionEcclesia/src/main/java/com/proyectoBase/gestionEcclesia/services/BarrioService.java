@@ -1,5 +1,6 @@
 package com.proyectoBase.gestionEcclesia.services;
 
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.repositories.BarrioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BarrioService {
+    private final UsuarioContextUtil usuarioContextUtil;
     private final BarrioRepository barrioRepository;
     private final ComunaService comunaService;
 
@@ -30,6 +32,8 @@ public class BarrioService {
     public Barrio save(BarrioDTO barrioDTO){
         Barrio barrio = new Barrio();
         updateBarrioFromDTO(barrio,barrioDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        barrio.setUsuarioRegistro(usuario);
         return barrioRepository.save(barrio);
     }
 

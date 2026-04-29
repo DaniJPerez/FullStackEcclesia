@@ -1,5 +1,6 @@
 package com.proyectoBase.gestionEcclesia.services;
 
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ComunaService {
+    private final UsuarioContextUtil usuarioContextUtil;
     private final ComunaRepository comunaRepository;
     private final CiudadService ciudadService;
 
@@ -30,7 +32,9 @@ public class ComunaService {
     @Transactional
     public Comuna save(ComunaDTO comunaDTO){
         Comuna comuna = new Comuna();
-        comuna=updateComunaFromDTO(comuna,comunaDTO);
+        updateComunaFromDTO(comuna,comunaDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        comuna.setUsuarioRegistro(usuario);
         return comunaRepository.save(comuna);
     }
 

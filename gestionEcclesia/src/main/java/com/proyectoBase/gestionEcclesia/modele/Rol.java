@@ -1,11 +1,9 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Data
@@ -31,5 +29,5 @@ public class Rol {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_rol_usuario_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 }

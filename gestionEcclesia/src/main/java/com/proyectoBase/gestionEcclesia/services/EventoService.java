@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.services;
 
 import com.proyectoBase.gestionEcclesia.DTOS.EventoDTO;
+import com.proyectoBase.gestionEcclesia.config.UsuarioContextUtil;
 import com.proyectoBase.gestionEcclesia.modele.*;
 import com.proyectoBase.gestionEcclesia.repositories.EventoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 //nombrar la clase para que sea expecifico a una clase hija. o en todo caso implementar una clase generica que maneje ambos datos
 public class EventoService {
 
+    private final UsuarioContextUtil usuarioContextUtil;
     private final EventoRepository eventoRepository;
     private final DireccionService direccionService;
 
@@ -40,6 +42,8 @@ public class EventoService {
     public Evento save(EventoDTO eventoDTO) {
         Evento evento = new Evento();
         updateEventoFromDTO(evento, eventoDTO);
+        var usuario = usuarioContextUtil.getUsuarioAutenticado();
+        evento.setUsuarioRegistro(usuario);
         return eventoRepository.save(evento);
     }
 
@@ -81,7 +85,7 @@ public class EventoService {
                 if(fechaInicio==null)
                     throw new IllegalArgumentException("La fecha de inicio del evento no puede ser nula al actualizar");
                 else
-                    evento.setFechaInicio(eventoDTO.getFechaInicio());
+                    evento.setFechaInicio(fechaInicio);
 
                 var fechaFin = (eventoDTO.getFechaFinalizacion() != null && !eventoDTO.getFechaFinalizacion().toString().isBlank()
                                 && !eventoDTO.getFechaFinalizacion().isBefore(eventoDTO.getFechaInicio()))
@@ -90,7 +94,7 @@ public class EventoService {
                 if(fechaFin==null)
                     throw new IllegalArgumentException("La fecha de finalización del evento no puede ser nula al actualizar");
                 else
-                    evento.setFechaFin(eventoDTO.getFechaFinalizacion());
+                    evento.setFechaFin(fechaFin);
 
                 var accesivilidad = (eventoDTO.getAccesibilidad() != null && !eventoDTO.getAccesibilidad().isEmpty())
                         ? parseAccesivilidad(eventoDTO.getAccesibilidad())
@@ -114,7 +118,7 @@ public class EventoService {
                 if(descripcion==null)
                     System.out.println("La descripcion del evento es nula al actualizar, no se asignará una nueva al guardar");
                 else
-                    evento.setDescripcion(eventoDTO.getDescripcion());
+                    evento.setDescripcion(descripcion);
 
                 evento.setDireccion(direccionService.updateDireccionFromDTO(
                         evento.getDireccion(),eventoDTO.getDireccionDTO()

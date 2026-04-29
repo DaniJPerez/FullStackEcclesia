@@ -1,13 +1,10 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
-import com.proyectoBase.gestionEcclesia.DTOS.ContribucionDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
@@ -32,5 +29,5 @@ public  class TipoContribucion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_registro", foreignKey = @ForeignKey(name = "fk_tipo_contribucion_registro"))
-    private Usuario usuarioRegirstro;
+    private Usuario usuarioRegistro;
 }

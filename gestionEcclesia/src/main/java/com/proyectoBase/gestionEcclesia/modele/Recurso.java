@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "recursos", uniqueConstraints = @UniqueConstraint(name = "uk_recurso_descripcion_donante", columnNames = {"descripcion_recurso", "id_donante"}))
 public abstract class Recurso {
     @Id
