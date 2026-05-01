@@ -5,10 +5,12 @@ import com.proyectoBase.gestionEcclesia.modele.Gasto;
 import com.proyectoBase.gestionEcclesia.services.GastoServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,17 @@ public class GastoController {
         GastoDTO dto = gastoServices.convertToDto(gasto);
 
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/buscarEntreFechas")
+    public ResponseEntity<List<GastoDTO>> getGastosEntreFechas(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+        List<GastoDTO> gastos = gastoServices.findByFechaRegistroBetween(fechaInicio, fechaFin).stream()
+                .map(gastoServices::convertToDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(gastos);
     }
 
     // ==========================

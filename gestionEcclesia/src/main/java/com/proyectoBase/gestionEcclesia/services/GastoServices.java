@@ -27,6 +27,10 @@ public class GastoServices {
                 .orElseThrow(() -> new IllegalArgumentException("Gasto no encontrado con ID: " + id));
     }
 
+    public List<Gasto> findByFechaRegistroBetween(LocalDate fechaInicio, LocalDate fechaFin) {
+        return gastoRepository.findByFechaRegistroBetween(fechaInicio, fechaFin);
+    }
+
     public Gasto saveGasto(GastoDTO gastoDTO){
         Gasto gasto = new Gasto();
         updateGastoFromDto(gasto,gastoDTO);
