@@ -1,6 +1,5 @@
 package com.proyectoBase.gestionEcclesia.DTOS;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +29,7 @@ public class EventoDTO {
 
     private String accesibilidad;
 
-    @NotBlank(message = "El lugar es obligatorio")
+    @NotNull(message = "El lugar es obligatorio")
     private DireccionDTO direccionDTO;
 
     private String estadoEvento;
