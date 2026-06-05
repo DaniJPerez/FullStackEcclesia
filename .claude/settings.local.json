@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Proyecto-Iglesia\\\\gestionEcclesia\" -Force)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "PowerShell(dir \"C:\\\\Proyecto-Iglesia\\\\gestionEcclesia\\\\gestionEcclesia\\\\src\\\\main\\\\java\\\\com\\\\proyectoBase\\\\gestionEcclesia\" -Recurse | Where-Object { $_.Extension -eq \".java\" } | Select-Object FullName | Sort-Object FullName)",
+      "PowerShell(dir \"C:\\\\Proyecto-Iglesia\\\\gestionEcclesia\\\\gestionEcclesia\\\\src\\\\main\\\\java\\\\com\\\\proyectoBase\\\\gestionEcclesia\" | ForEach-Object { $_.Name })",
+      "PowerShell(dir \"$env:USERPROFILE\\\\.gradle\\\\wrapper\\\\dists\" | ForEach-Object { $_.Name })",
+      "PowerShell(dir \"$env:USERPROFILE\\\\.gradle\\\\wrapper\\\\dists\\\\gradle-8.14-bin\" -Recurse | Where-Object { $_.Extension -eq \".zip\" -or $_.Name -eq \"gradle\" } | Select-Object FullName | Select-Object -First 5)",
+      "PowerShell(dir \"$env:USERPROFILE\\\\.gradle\\\\wrapper\\\\dists\\\\gradle-8.14-bin\" | ForEach-Object { $_.Name })",
+      "PowerShell(dir \"$env:USERPROFILE\\\\.gradle\\\\wrapper\\\\dists\\\\gradle-8.14-bin\\\\38aieal9i53h9rfe7vjup95b9\" | ForEach-Object { $_.Name })",
+      "Bash(.\\\\gradlew.bat test *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
+    ]
+  }
+}
