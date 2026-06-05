@@ -4,40 +4,48 @@ import com.proyectoBase.gestionEcclesia.DTOS.EntidadTerritorialDto;
 import com.proyectoBase.gestionEcclesia.modele.EntidadTerritorial;
 import com.proyectoBase.gestionEcclesia.services.EntidadTerritorialServices;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Service
+@RestController
+@RequestMapping("/api/entidadesterritoriales")
 @RequiredArgsConstructor
 public class EntidadTerritorialController {
 
     private final EntidadTerritorialServices entidadTerritorialService;
 
-    public EntidadTerritorialDto crear(EntidadTerritorialDto dto) {
-        EntidadTerritorial entidad = entidadTerritorialService.save(dto);
-        return entidadTerritorialService.convertToDto(entidad);
-    }
-
-    public EntidadTerritorialDto obtenerPorId(Long id) {
-        EntidadTerritorial entidad = entidadTerritorialService.findByIdEntidadTerritorial(id);
-        return entidadTerritorialService.convertToDto(entidad);
-    }
-
-    public List<EntidadTerritorialDto> obtenerTodas() {
-        return entidadTerritorialService.getAllEntidadTerritorials()
+    @GetMapping
+    public ResponseEntity<List<EntidadTerritorialDto>> getAll() {
+        List<EntidadTerritorialDto> lista = entidadTerritorialService.getAllEntidadTerritorials()
                 .stream()
                 .map(entidadTerritorialService::convertToDto)
                 .toList();
+        return ResponseEntity.ok(lista);
     }
 
-    public EntidadTerritorialDto actualizar(Long id, EntidadTerritorialDto dto) {
+    @GetMapping("/{id}")
+    public ResponseEntity<EntidadTerritorialDto> getById(@PathVariable Long id) {
+        EntidadTerritorial entidad = entidadTerritorialService.findByIdEntidadTerritorial(id);
+        return ResponseEntity.ok(entidadTerritorialService.convertToDto(entidad));
+    }
+
+    @PostMapping
+    public ResponseEntity<EntidadTerritorialDto> create(@RequestBody EntidadTerritorialDto dto) {
+        EntidadTerritorial entidad = entidadTerritorialService.save(dto);
+        return ResponseEntity.status(201).body(entidadTerritorialService.convertToDto(entidad));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EntidadTerritorialDto> update(@PathVariable Long id, @RequestBody EntidadTerritorialDto dto) {
         EntidadTerritorial entidad = entidadTerritorialService.update(id, dto);
-        return entidadTerritorialService.convertToDto(entidad);
+        return ResponseEntity.ok(entidadTerritorialService.convertToDto(entidad));
     }
 
-    public void eliminar(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         entidadTerritorialService.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
 }

@@ -51,6 +51,7 @@ dependencies {
 	testImplementation 'org.springframework.graphql:spring-graphql-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.junit.platform:junit-platform-suite'
 
 	// Soporte para dialecto Oracle en Hibernate (opcional)
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api'

@@ -1,6 +1,7 @@
 package com.proyectoBase.gestionEcclesia.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyectoBase.gestionEcclesia.DTOS.LoginUserDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.UsuarioDto;
 import com.proyectoBase.gestionEcclesia.modele.Usuario;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import com.proyectoBase.gestionEcclesia.config.SecurityConfig;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -60,5 +62,34 @@ class AuthControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    void login_conCredencialesValidas_retornaUsuarioYStatus200() throws Exception {
+        LoginUserDTO loginDto = new LoginUserDTO("usuario1", "pass123");
+        Usuario usuario = new Usuario();
+        usuario.setIdUsuario(1L);
+        usuario.setNombreUsuario("usuario1");
+
+        when(usuarioServices.validacionIngresoUsuario(any(LoginUserDTO.class))).thenReturn(usuario);
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombreUsuario").value("usuario1"));
+    }
+
+    @Test
+    void login_conCredencialesInvalidas_retorna401() throws Exception {
+        LoginUserDTO loginDto = new LoginUserDTO("usuario1", "wrongpass");
+
+        when(usuarioServices.validacionIngresoUsuario(any(LoginUserDTO.class)))
+                .thenThrow(new BadCredentialsException("Credenciales inválidas"));
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDto)))
+                .andExpect(status().isUnauthorized());
     }
 }
