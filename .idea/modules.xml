@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.proyectoBase.gestionEcclesia.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.proyectoBase.gestionEcclesia.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.proyectoBase.gestionEcclesia.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.proyectoBase.gestionEcclesia.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gestionEcclesia.iml" filepath="$PROJECT_DIR$/.idea/gestionEcclesia.iml" />
     </modules>
   </component>
