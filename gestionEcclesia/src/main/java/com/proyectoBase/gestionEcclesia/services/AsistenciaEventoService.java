@@ -95,7 +95,7 @@ public class AsistenciaEventoService {
     @Transactional
     public void delete(Long id) {
         AsistenciaEvento asistenciaEvento = getAsistenciaById(id);
-        var idmiembro = asistenciaEvento.getPersona().getNumeroIdentificacion();
+        var idmiembro = asistenciaEvento.getPersona().getIdPersona();
         var idevento = asistenciaEvento.getEvento().getId();
         //usa el intermediario para eliminar la asistencia dentro de las otras tablas relacionadas
         asistenciaEventoManagerService.eliminarAsistenciaMiembro(idmiembro, idevento);

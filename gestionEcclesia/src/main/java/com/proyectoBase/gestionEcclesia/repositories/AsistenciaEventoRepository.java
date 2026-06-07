@@ -20,7 +20,7 @@ public interface AsistenciaEventoRepository extends JpaRepository<AsistenciaEven
     @Procedure(procedureName = "SP_GET_MIEMBROS_BY_FECHA")
     List<Persona> findMiembrosByFechaEventoProcedure(@Param("fecha") LocalDate fecha, Long idEvento);
 
-    List<AsistenciaEvento> findByPersona_NumeroIdentificacion(Long miembroId);
+    List<AsistenciaEvento> findByPersona_IdPersona(Long miembroId);
 
     List<AsistenciaEvento> findByEvento_Id(Long eventoId);
 

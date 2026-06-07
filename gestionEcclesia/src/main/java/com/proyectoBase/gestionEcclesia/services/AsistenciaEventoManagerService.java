@@ -47,7 +47,7 @@ public class AsistenciaEventoManagerService{
     @Transactional
     public AsistenciaEvento agregarAsistenciasByMiembroAndEvento(AsistenciaEvento asistenciaEvento){
 
-        var miembro = miembroService.findById(asistenciaEvento.getPersona().getNumeroIdentificacion());
+        var miembro = miembroService.findById(asistenciaEvento.getPersona().getIdPersona());
         var evento = eventoService.findById(asistenciaEvento.getEvento().getId());
 
         if(miembro!=null && evento!=null){
@@ -91,7 +91,7 @@ public class AsistenciaEventoManagerService{
     @Transactional
     public AsistenciaEvento actualizarAsistenciaMiembro(AsistenciaEvento asistenciaEvento){
 
-        var miembro = miembroService.findById(asistenciaEvento.getPersona().getNumeroIdentificacion());
+        var miembro = miembroService.findById(asistenciaEvento.getPersona().getIdPersona());
         var evento = eventoService.findById(asistenciaEvento.getEvento().getId());
 
         if(miembro!=null && evento!=null){

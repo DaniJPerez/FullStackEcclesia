@@ -89,7 +89,7 @@ public class ContribucionFisicaService {
         dto.setObservaciones(contribucion.getObservacionContribucion());
 
         if (contribucion.getPersona() != null) {
-            dto.getMiembro().setId(contribucion.getPersona().getNumeroIdentificacion());
+            dto.getMiembro().setId(contribucion.getPersona().getIdPersona());
         }
 
         return dto;

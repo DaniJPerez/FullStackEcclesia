@@ -26,6 +26,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class MiembroDTO {
     private Long id;
+
+    private Long numeroIdentificacion;
     
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;

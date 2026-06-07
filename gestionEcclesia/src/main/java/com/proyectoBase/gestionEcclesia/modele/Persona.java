@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +20,16 @@ import java.util.List;
 public class Persona {
     //identidficador unico
     @Id
-    @Column(name = "identificacion", precision = 12, scale = 0,nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persona_seq")
+    @SequenceGenerator(
+            name = "persona_seq",
+            sequenceName = "SEC_PERSONA", // Nombre de la secuencia en la BD (Convención: SEC_NOMBRE_TABLA)
+            allocationSize = 1 // Determina cuántos IDs Hibernate pide a la vez (1 es seguro)
+    )
+    @Column(name = "id_persona", nullable = false, updatable = false, precision = 6, scale = 0)
+    private Long idPersona;
+
+    @Column(name = "identificacion", precision = 12, scale = 0, unique = true)
     private Long numeroIdentificacion;
 
     @Column(name = "primer_nombre", length = 15, nullable = false)

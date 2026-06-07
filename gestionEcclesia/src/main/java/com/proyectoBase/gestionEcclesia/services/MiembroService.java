@@ -56,7 +56,7 @@ public class MiembroService {
     }
 
     public Persona updateMiembroFromDTO(Persona persona, MiembroDTO miembroDTO) {
-        if(persona!=null && miembroDTO != null && miembroDTO.getId() != null && persona.getNumeroIdentificacion().equals(miembroDTO.getId())){
+        if(persona!=null && miembroDTO != null && miembroDTO.getId() != null && persona.getIdPersona().equals(miembroDTO.getId())){
 
 
             var primerNombre = miembroDTO.getNombre()!=null && !miembroDTO.getNombre().isBlank() ? miembroDTO.getNombre() : persona.getPrimerNombre();
@@ -142,7 +142,7 @@ public class MiembroService {
 
             MiembroDTO dto = new MiembroDTO();
 
-            var id = persona.getNumeroIdentificacion() != null ? persona.getNumeroIdentificacion() : null;
+            var id = persona.getIdPersona() != null ? persona.getIdPersona() : null;
             if(id==null)
                 throw new IllegalArgumentException("El ID del miembro es nulo al convertir a DTO");
             else
