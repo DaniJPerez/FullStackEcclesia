@@ -6,6 +6,7 @@ import com.proyectoBase.gestionEcclesia.modele.Finanza;
 import com.proyectoBase.gestionEcclesia.services.FinanzaServices;
 import com.proyectoBase.gestionEcclesia.services.GastoServices;
 import com.proyectoBase.gestionEcclesia.services.ContribucionService;
+import com.proyectoBase.gestionEcclesia.config.JwtUtil;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ class FinanzaControllerTest {
 
     @MockitoBean
     private UsuarioServices usuarioServices;
+
+    @MockitoBean
+    private JwtUtil jwtUtil;
 
     private FinanzaDTO buildFinanzaDTO() {
         FinanzaDTO dto = new FinanzaDTO();

@@ -3,6 +3,7 @@ package com.proyectoBase.gestionEcclesia.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyectoBase.gestionEcclesia.DTOS.LoginUserDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.UsuarioDto;
+import com.proyectoBase.gestionEcclesia.config.JwtUtil;
 import com.proyectoBase.gestionEcclesia.config.SecurityConfig;
 import com.proyectoBase.gestionEcclesia.modele.Usuario;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
@@ -36,6 +37,9 @@ class UsuarioControllerTest {
 
     @MockitoBean
     private UsuarioServices usuarioServices;
+
+    @MockitoBean
+    private JwtUtil jwtUtil;
 
     private UsuarioDto buildDto() {
         return new UsuarioDto(null, "admin", "pass123", LocalDate.of(2024, 1, 1), true, "admin@test.com", "ROLE_ADMIN");

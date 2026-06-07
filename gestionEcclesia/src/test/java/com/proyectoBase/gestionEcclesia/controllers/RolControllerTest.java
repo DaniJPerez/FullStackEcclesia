@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.proyectoBase.gestionEcclesia.DTOS.RolDTO;
 import com.proyectoBase.gestionEcclesia.modele.Rol;
 import com.proyectoBase.gestionEcclesia.services.RolService;
+import com.proyectoBase.gestionEcclesia.config.JwtUtil;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ class RolControllerTest {
 
     @MockitoBean
     private UsuarioServices usuarioServices;
+
+    @MockitoBean
+    private JwtUtil jwtUtil;
 
     private RolDTO buildRolDTO() {
         return new RolDTO(1L, "ROLE_ADMIN", "Administrador del sistema");

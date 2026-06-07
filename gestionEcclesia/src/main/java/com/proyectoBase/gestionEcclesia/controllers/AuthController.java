@@ -2,7 +2,6 @@ package com.proyectoBase.gestionEcclesia.controllers;
 
 import com.proyectoBase.gestionEcclesia.DTOS.LoginUserDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.UsuarioDto;
-import com.proyectoBase.gestionEcclesia.modele.Usuario;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginUserDTO loginDto) {
         try {
-            Usuario usuario = usuarioServices.validacionIngresoUsuario(loginDto);
-            return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(usuarioServices.login(loginDto));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }

@@ -1,8 +1,9 @@
 package com.proyectoBase.gestionEcclesia.services;
 
+import com.proyectoBase.gestionEcclesia.DTOS.LoginResponseDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.LoginUserDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.UsuarioDto;
-import com.proyectoBase.gestionEcclesia.modele.Persona;
+import com.proyectoBase.gestionEcclesia.config.JwtUtil;
 import com.proyectoBase.gestionEcclesia.modele.RolSistema;
 import com.proyectoBase.gestionEcclesia.modele.Usuario;
 import com.proyectoBase.gestionEcclesia.repositories.UsuarioRepository;
@@ -21,15 +22,15 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class UsuarioServices implements UserDetailsService{
+public class UsuarioServices implements UserDetailsService {
 
     private final UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public Usuario createUsuario(UsuarioDto usuarioDto) {
         Usuario usuario = new Usuario();
         usuario.setNombreUsuario(usuarioDto.getUserName());
-        // Guardar contraseña ya codificada
         usuario.setContrasenia(passwordEncoder.encode(usuarioDto.getPassword()));
         usuario.setEmail(usuarioDto.getCorreo());
         var fechaRegistro = LocalDate.now();
@@ -64,24 +65,23 @@ public class UsuarioServices implements UserDetailsService{
                 .build();
     }
 
-    // (opcional) método de validación programática si lo necesitas:
-    public Usuario validacionIngresoUsuario(LoginUserDTO login) {
-        Usuario usuario = repository.findByNombreUsuario(login.getUserName());
-        if (usuario != null && passwordEncoder.matches(login.getContrasenia(), usuario.getContrasenia())) {
-            return usuario;
+    public LoginResponseDTO login(LoginUserDTO loginDto) {
+        Usuario usuario = repository.findByNombreUsuario(loginDto.getUserName());
+        if (usuario == null || !passwordEncoder.matches(loginDto.getContrasenia(), usuario.getContrasenia())) {
+            throw new BadCredentialsException("Usuario o contraseña incorrectos");
         }
-        throw new BadCredentialsException("Usuario o contraseña incorrectos");
+        UserDetails userDetails = loadUserByUsername(usuario.getNombreUsuario());
+        String token = jwtUtil.generateToken(userDetails);
+        String rol = usuario.getRolSistema() != null ? usuario.getRolSistema().name() : "ROLE_USER";
+        return new LoginResponseDTO(token, "Bearer", usuario.getNombreUsuario(), usuario.getEmail(), rol);
     }
 
-    public Usuario updatePassword(LoginUserDTO usuario, String newPassword) {
-        Usuario usuarioValidador = repository.findByNombreUsuario(usuario.getUserName());
-        if (usuarioValidador != null && passwordEncoder.matches(usuario.getContrasenia(), usuarioValidador.getContrasenia())) {
+    public Usuario updatePassword(LoginUserDTO loginDto, String newPassword) {
+        Usuario usuarioValidador = repository.findByNombreUsuario(loginDto.getUserName());
+        if (usuarioValidador != null && passwordEncoder.matches(loginDto.getContrasenia(), usuarioValidador.getContrasenia())) {
             usuarioValidador.setContrasenia(passwordEncoder.encode(newPassword));
-            return usuarioValidador;
+            return repository.save(usuarioValidador);
         }
         return null;
     }
-
-
-
 }

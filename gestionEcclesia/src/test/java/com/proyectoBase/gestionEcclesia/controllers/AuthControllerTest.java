@@ -1,9 +1,11 @@
 package com.proyectoBase.gestionEcclesia.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proyectoBase.gestionEcclesia.DTOS.LoginResponseDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.LoginUserDTO;
 import com.proyectoBase.gestionEcclesia.DTOS.UsuarioDto;
 import com.proyectoBase.gestionEcclesia.modele.Usuario;
+import com.proyectoBase.gestionEcclesia.config.JwtUtil;
 import com.proyectoBase.gestionEcclesia.services.UsuarioServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ class AuthControllerTest {
     @MockitoBean
     private UsuarioServices usuarioServices;
 
+    @MockitoBean
+    private JwtUtil jwtUtil;
+
     private UsuarioDto buildUsuarioDto() {
         return new UsuarioDto(null, "usuario1", "pass123", LocalDate.now(), true, "u@test.com", "ADMIN");
     }
@@ -65,26 +70,26 @@ class AuthControllerTest {
     }
 
     @Test
-    void login_conCredencialesValidas_retornaUsuarioYStatus200() throws Exception {
+    void login_conCredencialesValidas_retornaTokenYStatus200() throws Exception {
         LoginUserDTO loginDto = new LoginUserDTO("usuario1", "pass123");
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario(1L);
-        usuario.setNombreUsuario("usuario1");
+        LoginResponseDTO respuesta = new LoginResponseDTO("jwt-token-de-ejemplo", "Bearer", "usuario1", "u@test.com", "ROLE_USER");
 
-        when(usuarioServices.validacionIngresoUsuario(any(LoginUserDTO.class))).thenReturn(usuario);
+        when(usuarioServices.login(any(LoginUserDTO.class))).thenReturn(respuesta);
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombreUsuario").value("usuario1"));
+                .andExpect(jsonPath("$.nombreUsuario").value("usuario1"))
+                .andExpect(jsonPath("$.tipo").value("Bearer"))
+                .andExpect(jsonPath("$.token").isNotEmpty());
     }
 
     @Test
     void login_conCredencialesInvalidas_retorna401() throws Exception {
         LoginUserDTO loginDto = new LoginUserDTO("usuario1", "wrongpass");
 
-        when(usuarioServices.validacionIngresoUsuario(any(LoginUserDTO.class)))
+        when(usuarioServices.login(any(LoginUserDTO.class)))
                 .thenThrow(new BadCredentialsException("Credenciales inválidas"));
 
         mockMvc.perform(post("/api/auth/login")
