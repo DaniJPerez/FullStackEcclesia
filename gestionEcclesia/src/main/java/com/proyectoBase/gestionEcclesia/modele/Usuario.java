@@ -6,10 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
 
@@ -21,35 +19,29 @@ import java.time.LocalDate;
 public class Usuario {
 
     @Id
-    @Column(name= "id_usuario", precision = 12)
+    @Column(name = "id_usuario", precision = 12)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
-    @SequenceGenerator(
-            name = "usuario_seq",
-            sequenceName = "SEC_USUARIO", // Nombre de la secuencia en la BD (Convención: SEC_NOMBRE_TABLA)
-            allocationSize = 1 // Determina cuántos IDs Hibernate pide a la vez (1 es seguro)
-    )
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "SEC_USUARIO", allocationSize = 1)
     private Long idUsuario;
 
-    @Column(name="nombre_usuario", length = 35, nullable = false, unique = true)
+    @Column(name = "nombre_usuario", length = 35, nullable = false, unique = true)
     private String nombreUsuario;
 
-    @Column(name="email", length = 50, nullable = false, unique = true)
+    @Column(name = "email", length = 50, nullable = false, unique = true)
     @Email
     private String email;
 
-    @Column(name="contrasena", length = 60, nullable = false)
+    @Column(name = "contrasena", length = 60, nullable = false)
     @Size(min = 8, max = 60, message = "La contraseña debe tener al menos 8 caracteres")
     private String contrasenia;
 
-    @Column(name="fecha_registro")
-    @CreatedDate
+    @Column(name = "fecha_registro")
     private LocalDate fechaRegistro;
 
-    @Column(name="fecha_modificacion")
-    @CreatedDate
+    @Column(name = "fecha_modificacion")
     private LocalDate fechaModificacion;
 
-    @Column(name="activo")
+    @Column(name = "activo")
     @ColumnDefault("1")
     private Boolean activo;
 
@@ -59,7 +51,7 @@ public class Usuario {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_administrador", foreignKey = @ForeignKey(name = "fk_usuario_administrador"))
-    @Lazy
+    @ToString.Exclude
     private Usuario usuarioAdministrador;
 
     public static RolSistema convertirRolService(String rol) {
@@ -69,5 +61,4 @@ public class Usuario {
             throw new IllegalArgumentException("Rol no válido: " + rol);
         }
     }
-
 }

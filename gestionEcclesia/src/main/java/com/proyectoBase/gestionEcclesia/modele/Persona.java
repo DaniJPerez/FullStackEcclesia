@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -88,9 +89,11 @@ public class Persona {
     private boolean activo;
 
     @OneToMany(mappedBy = "persona")
+    @ToString.Exclude
     private List<AsistenciaEvento> asistenciasEventos;
 
     @OneToMany(mappedBy = "persona")
+    @ToString.Exclude
     private List<Contribucion> contribuciones;
 
     @ManyToOne(fetch = FetchType.LAZY)

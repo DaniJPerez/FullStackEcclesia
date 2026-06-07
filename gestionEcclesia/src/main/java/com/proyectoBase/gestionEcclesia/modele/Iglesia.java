@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -47,9 +48,11 @@ public class Iglesia {
     private ZonaAdministrativa zonaAdministrativa;
 
     @OneToMany(mappedBy = "congregacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Persona> miembros;
 
     @OneToMany(mappedBy = "iglesia", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Recurso> recursos;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
-
 @Entity
 @Data
-@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "comunas", uniqueConstraints = @UniqueConstraint(name="uk_comuna_nombre_ciudad", columnNames = {"nombre_barrio", "id_ciudad"}))

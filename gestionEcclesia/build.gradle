@@ -45,7 +45,6 @@ dependencies {
 	testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	implementation 'com.oracle.database.jdbc:ojdbc11:23.5.0.24.07'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

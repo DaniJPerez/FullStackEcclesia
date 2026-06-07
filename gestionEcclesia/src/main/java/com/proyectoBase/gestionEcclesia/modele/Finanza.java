@@ -1,7 +1,10 @@
 package com.proyectoBase.gestionEcclesia.modele;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,6 +32,7 @@ public class Finanza {
             joinColumns = @JoinColumn(name = "id_finanza"),
             inverseJoinColumns = @JoinColumn(name = "id_contribucion")
     )
+    @ToString.Exclude
     private List<Contribucion> listaEntradas;
 
     @ManyToMany
@@ -37,6 +41,7 @@ public class Finanza {
             joinColumns = @JoinColumn(name = "id_finanza"),
             inverseJoinColumns = @JoinColumn(name = "id_gasto")
     )
+    @ToString.Exclude
     private List<Gasto> listaGastos;
 
     @Column(name = "total_contribuciones", precision = 10, scale = 2)
